@@ -1,5 +1,7 @@
 # ContextWeft
 
+English | [简体中文](README.zh-CN.md)
+
 **Portable, permission-aware context for every AI agent.**
 
 > Status: planning / pre-alpha. ContextWeft is not ready for production use yet.
