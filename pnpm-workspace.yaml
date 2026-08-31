@@ -4,3 +4,16 @@ packages:
 
 catalog:
   "@sinclair/typebox": 0.34.52
+
+# OpenContext's facade bundles optional UI and LangChain integrations. Their
+# peer packages are not exercised by ContextWeft's embedded SQLite adapter, so
+# keep the exception list explicit instead of disabling peer validation globally.
+peerDependencyRules:
+  allowedVersions:
+    zod: ">=3.23.8 <5"
+  ignoreMissing:
+    - "@anthropic-ai/sdk"
+    - "@browserbasehq/stagehand"
+    - "@ibm-cloud/watsonx-ai"
+    - "ibm-cloud-sdk-core"
+    - "react"

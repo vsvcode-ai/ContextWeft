@@ -16,6 +16,9 @@ export default defineConfig({
       "@contextweft/git-adapter": fileURLToPath(
         new URL("./packages/git-adapter/src/index.ts", import.meta.url),
       ),
+      "@contextweft/opencontext-adapter": fileURLToPath(
+        new URL("./packages/opencontext-adapter/src/index.ts", import.meta.url),
+      ),
       "@contextweft/storage": fileURLToPath(
         new URL("./packages/storage/src/index.ts", import.meta.url),
       ),

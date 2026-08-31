@@ -69,6 +69,25 @@ export interface CreateHandoffInput extends RequestIdentity {
   readonly note?: string;
 }
 
+export interface RecordMemoryInput extends RequestIdentity {
+  readonly workspaceId: string;
+  readonly workItemId: string;
+  readonly idempotencyKey: string;
+  readonly content: string;
+  readonly kind: "fact" | "decision" | "preference" | "constraint";
+  readonly confidence: number;
+  readonly validFrom?: string;
+}
+
+export interface CorrectMemoryInput extends RequestIdentity {
+  readonly workspaceId: string;
+  readonly workItemId: string;
+  readonly idempotencyKey: string;
+  readonly targetEventId: string;
+  readonly content: string;
+  readonly reason: string;
+}
+
 export interface BootstrapInput {
   readonly workspaceId: string;
   readonly workItemId: string;
@@ -88,6 +107,17 @@ export interface BootstrapResult {
   readonly pack: ContextPack;
   readonly markdown: string;
   readonly warnings: readonly string[];
+}
+
+export interface MemoryWriteResult {
+  readonly event: ContextEvent;
+  readonly replayed: boolean;
+  readonly indexed: boolean;
+  readonly warnings: readonly string[];
+}
+
+export interface MemoryRebuildResult {
+  readonly eventsProcessed: number;
 }
 
 export interface WorkspaceStatus {

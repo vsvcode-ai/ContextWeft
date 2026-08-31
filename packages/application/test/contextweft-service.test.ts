@@ -82,7 +82,7 @@ describe("ContextWeftService", () => {
       workspaceId: workspace.id,
       workItemId: workItem.id,
       idempotencyKey: "checkpoint-1",
-      nextActions: ["This changed payload must not create duplicate events"],
+      nextActions: [],
       ...identity,
     });
     expect(replay.replayed).toBe(true);
@@ -208,6 +208,98 @@ describe("ContextWeftService", () => {
     });
     expect(result.pack.freshness.status).toBe("missing");
     expect(result.warnings).toHaveLength(2);
+    repository.close();
+  });
+
+  it("keeps memory writes canonical and makes derived indexing retryable", async () => {
+    const repository = new SqliteCanonicalRepository({ path: ":memory:" });
+    const indexed: string[] = [];
+    let indexAvailable = false;
+    const service = new ContextWeftService({
+      repository,
+      git: new FakeGit(),
+      memory: {
+        async search() {
+          return [];
+        },
+        async ingest(events) {
+          if (!indexAvailable) {
+            throw new Error("index offline");
+          }
+          indexed.push(...events.map((event) => event.eventId));
+        },
+        async rebuild(_workspaceId, events) {
+          indexed.push(...events.map((event) => event.eventId));
+        },
+      },
+      clock: { now: () => new Date(time) },
+    });
+    const workspace = await service.initializeWorkspace({
+      rootPath: gitSnapshot.repositoryRoot,
+      name: "Memory fixture",
+      ...identity,
+    });
+    const workItem = service.startWorkItem({
+      workspaceId: workspace.id,
+      title: "Remember architecture",
+      goal: "Keep decisions across agents.",
+      idempotencyKey: "memory-work",
+      ...identity,
+    });
+
+    const first = await service.recordMemory({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      idempotencyKey: "memory-1",
+      content: "Context packs are compiled deterministically.",
+      kind: "decision",
+      confidence: 1,
+      ...identity,
+    });
+    expect(first.indexed).toBe(false);
+    expect(first.warnings[0]).toContain("safely stored");
+    expect(repository.getEvent(first.event.eventId)).toEqual(first.event);
+
+    indexAvailable = true;
+    const replay = await service.recordMemory({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      idempotencyKey: "memory-1",
+      content: "A retried payload cannot overwrite the canonical fact.",
+      kind: "fact",
+      confidence: 0.5,
+      ...identity,
+    });
+    expect(replay.replayed).toBe(true);
+    expect(replay.indexed).toBe(true);
+    expect(replay.event).toEqual(first.event);
+
+    const correction = await service.correctMemory({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      idempotencyKey: "memory-correction-1",
+      targetEventId: first.event.eventId,
+      content: "Context packs are deterministic for the same canonical inputs.",
+      reason: "Clarify the determinism boundary.",
+      ...identity,
+    });
+    expect(correction.event.eventType).toBe("memory.corrected");
+    expect(correction.indexed).toBe(true);
+    const correctionReplay = await service.correctMemory({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      idempotencyKey: "memory-correction-1",
+      targetEventId: "evt:does-not-exist",
+      content: "A retry does not mutate canonical correction data.",
+      reason: "Retry fixture.",
+      ...identity,
+    });
+    expect(correctionReplay.replayed).toBe(true);
+    expect(correctionReplay.event).toEqual(correction.event);
+
+    const rebuilt = await service.rebuildMemory(workspace.id);
+    expect(rebuilt.eventsProcessed).toBe(2);
+    expect(indexed).toContain(first.event.eventId);
     repository.close();
   });
 });

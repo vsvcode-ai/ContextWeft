@@ -36,9 +36,13 @@ import type {
   BootstrapInput,
   BootstrapResult,
   CheckpointResult,
+  CorrectMemoryInput,
   CreateCheckpointInput,
   CreateHandoffInput,
   InitializeWorkspaceInput,
+  MemoryRebuildResult,
+  MemoryWriteResult,
+  RecordMemoryInput,
   StartWorkItemInput,
   WorkspaceStatus,
 } from "./types.js";
@@ -151,10 +155,6 @@ export class ContextWeftService {
   public async createCheckpoint(input: CreateCheckpointInput): Promise<CheckpointResult> {
     const workspace = this.#requireWorkspace(input.workspaceId);
     this.#requireWorkItem(input.workItemId, input.workspaceId);
-    if (input.nextActions.length === 0) {
-      throw new InvalidCheckpointError("A checkpoint requires at least one next action");
-    }
-
     const checkpointKey = `${input.idempotencyKey}:checkpoint`;
     const existing = this.#repository.getEventByIdempotencyKey(input.workspaceId, checkpointKey);
     if (existing !== undefined) {
@@ -169,6 +169,9 @@ export class ContextWeftService {
           .filter((artifact): artifact is ArtifactRef => artifact !== undefined),
         replayed: true,
       };
+    }
+    if (input.nextActions.length === 0) {
+      throw new InvalidCheckpointError("A checkpoint requires at least one next action");
     }
 
     const git = await this.#git.capture(workspace.rootPath);
@@ -234,6 +237,99 @@ export class ContextWeftService {
     return this.#repository.appendEvent(event).event;
   }
 
+  /**
+   * Persists a fact to the canonical event log before updating derived memory.
+   * A memory outage therefore reduces recall quality without losing the fact.
+   */
+  public async recordMemory(input: RecordMemoryInput): Promise<MemoryWriteResult> {
+    this.#requireWorkspace(input.workspaceId);
+    this.#requireWorkItem(input.workItemId, input.workspaceId);
+    const eventKey = `memory-record:${input.idempotencyKey}`;
+    const existing = this.#repository.getEventByIdempotencyKey(input.workspaceId, eventKey);
+    if (existing !== undefined) {
+      if (existing.eventType !== "memory.recorded") {
+        throw new InvalidCheckpointError("Memory idempotency key is used by another event");
+      }
+      return this.#indexMemoryEvent(existing, true);
+    }
+
+    const timestamp = this.#clock.now().toISOString();
+    const event = this.#event(
+      input.workspaceId,
+      input.workItemId,
+      "memory.recorded",
+      {
+        content: input.content,
+        kind: input.kind,
+        confidence: input.confidence,
+        ...(input.validFrom === undefined ? {} : { validFrom: input.validFrom }),
+      },
+      input,
+      eventKey,
+      timestamp,
+      [],
+    );
+    this.#repository.appendEvent(event);
+    return this.#indexMemoryEvent(event, false);
+  }
+
+  /**
+   * Appends a correction rather than mutating the original fact. Consumers can
+   * reconstruct both the current view and the complete audit history.
+   */
+  public async correctMemory(input: CorrectMemoryInput): Promise<MemoryWriteResult> {
+    this.#requireWorkspace(input.workspaceId);
+    this.#requireWorkItem(input.workItemId, input.workspaceId);
+    const eventKey = `memory-correct:${input.idempotencyKey}`;
+    const existing = this.#repository.getEventByIdempotencyKey(input.workspaceId, eventKey);
+    if (existing !== undefined) {
+      if (existing.eventType !== "memory.corrected") {
+        throw new InvalidCheckpointError("Memory idempotency key is used by another event");
+      }
+      return this.#indexMemoryEvent(existing, true);
+    }
+
+    const target = this.#repository.getEvent(input.targetEventId);
+    if (
+      (target?.eventType !== "memory.recorded" && target?.eventType !== "memory.corrected") ||
+      target.workspaceId !== input.workspaceId ||
+      target.workItemId !== input.workItemId
+    ) {
+      throw new InvalidCheckpointError(
+        "Memory correction must target a memory event from the same work item",
+      );
+    }
+
+    const timestamp = this.#clock.now().toISOString();
+    const event = this.#event(
+      input.workspaceId,
+      input.workItemId,
+      "memory.corrected",
+      {
+        targetEventId: input.targetEventId,
+        content: input.content,
+        reason: input.reason,
+      },
+      input,
+      eventKey,
+      timestamp,
+      target.provenance.artifactIds,
+    );
+    this.#repository.appendEvent(event);
+    return this.#indexMemoryEvent(event, false);
+  }
+
+  /** Replays canonical memory events into a disposable derived index. */
+  public async rebuildMemory(workspaceId: string): Promise<MemoryRebuildResult> {
+    this.#requireWorkspace(workspaceId);
+    const events = this.#repository.listEvents({
+      workspaceId,
+      eventTypes: ["memory.recorded", "memory.corrected"],
+    });
+    await this.#memory.rebuild(workspaceId, events);
+    return { eventsProcessed: events.length };
+  }
+
   public async bootstrap(input: BootstrapInput): Promise<BootstrapResult> {
     const workspace = this.#requireWorkspace(input.workspaceId);
     const workItem = this.#requireWorkItem(input.workItemId, input.workspaceId);
@@ -286,6 +382,22 @@ export class ContextWeftService {
       eventCount: this.#repository.countEvents(workspaceId),
       artifactCount: this.#repository.listArtifacts(workspaceId).length,
     };
+  }
+
+  async #indexMemoryEvent(event: ContextEvent, replayed: boolean): Promise<MemoryWriteResult> {
+    try {
+      await this.#memory.ingest([event]);
+      return { event, replayed, indexed: true, warnings: [] };
+    } catch (error) {
+      return {
+        event,
+        replayed,
+        indexed: false,
+        warnings: [
+          `The fact is safely stored, but the derived memory index was not updated (${errorMessage(error)}).`,
+        ],
+      };
+    }
   }
 
   #checkpointEvents(

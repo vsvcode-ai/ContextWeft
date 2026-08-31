@@ -20,6 +20,7 @@
       "@contextweft/context-compiler": ["./packages/context-compiler/src/index.ts"],
       "@contextweft/contracts": ["./packages/contracts/src/index.ts"],
       "@contextweft/git-adapter": ["./packages/git-adapter/src/index.ts"],
+      "@contextweft/opencontext-adapter": ["./packages/opencontext-adapter/src/index.ts"],
       "@contextweft/storage": ["./packages/storage/src/index.ts"]
     },
     "resolveJsonModule": true,

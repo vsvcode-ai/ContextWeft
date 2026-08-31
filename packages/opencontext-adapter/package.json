@@ -1,0 +1,32 @@
+{
+  "name": "@contextweft/opencontext-adapter",
+  "version": "0.0.0-development",
+  "description": "OpenContext-backed derived memory adapter for ContextWeft.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bench": "tsx bench/opencontext-adapter.bench.ts",
+    "build": "rm -rf dist && tsup src/index.ts --format esm --sourcemap --external @melandlabs/memory-store && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@contextweft/application": "workspace:*",
+    "@contextweft/context-compiler": "workspace:*",
+    "@contextweft/contracts": "workspace:*",
+    "@melandlabs/memory-store": "1.2.4"
+  }
+}
