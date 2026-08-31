@@ -2,34 +2,148 @@
 
 [English](README.md) | 简体中文
 
-**为每一个 AI 智能体提供可移植、权限感知的上下文。**
+为 AI 智能体提供可移植、权限感知的上下文基础设施。
 
-> 当前状态：规划 / Pre-alpha。ContextWeft 尚未达到可用于生产环境的阶段。
-
-ContextWeft 是一个开源的上下文控制平面，帮助个人和团队在不同 AI 智能体、
-编辑器、模型和会话之间传递经过验证的工作状态、企业知识与长期记忆。
-
-它希望回答一个实际问题：
-
-> 当我切换智能体时，新的智能体能否在不获取上一段聊天记录、也不重新探索整个
-> 项目的情况下，直接继续尚未完成的工作？
+ContextWeft 的目标是在编辑器、模型和智能体之间提供一层统一的 canonical
+context。Phase 1 的实现聚焦在软件开发连续性：可信 checkpoint、确定性的
+bootstrap pack、本地长期记忆，以及一套可被 Codex、Cursor、Claude Code 和其他
+MCP 客户端复用的 MCP 工具面。
 
 ## 当前状态
 
-ContextWeft 目前处于产品规划和仓库初始化阶段，尚无可用实现或正式版本。
+Phase 1 foundation 已完成本地实现并有测试覆盖。项目仍处于预发布阶段，首个 alpha
+tag 之前公开 API 仍可能调整。
 
-公开的技术和产品文档将与其描述的代码实现同步、逐步提交。本仓库不会把尚未实现
-的完整产品规划作为已经具备的功能对外发布。
+已实现：
 
-ContextWeft 计划使用
-[OpenContext](https://github.com/melandlabs/opencontext) 作为默认上下文运行时，
-同时保持公开协议与具体引擎解耦。该方向目前尚未实现。
+- 面向 workspace、work item、canonical event、Git snapshot、artifact 和
+  ContextPack 的版本化 JSON contract。
+- canonical SQLite 事件存储，包含事务、迁移、幂等写入和跨实体校验。
+- Git snapshot 捕获，包含仓库根目录校验和敏感路径过滤。
+- 确定性 ContextPack compiler，包含 token budget、provenance、freshness、
+  golden contract test 和 prompt-injection 边界渲染。
+- 基于 `@melandlabs/memory-store` 的 OpenContext-derived 本地记忆；canonical
+  event log 始终是 source of truth。
+- CLI 和 MCP stdio server，暴露同一套 Phase 1 工作流。
+- Codex、Cursor、Claude Code 的配置生成能力。
 
-## 参与贡献
+尚未实现：
 
-项目目前处于设计阶段。在开始实现功能或提出公开 API 方案之前，请先创建 Issue
-进行讨论。
+- 托管同步、多设备复制或 SaaS control plane。
+- 企业身份、RBAC、审计导出或策略管理。
+- 当前本地 OpenContext memory-store 边界之外的 vector recall。
+- 稳定 npm release。
+
+## 快速开始
+
+环境要求：
+
+- Node.js 22 或更新版本
+- pnpm 10 或更新版本
+- Git
+
+```bash
+pnpm install
+pnpm check
+pnpm build
+```
+
+在 Git 仓库中初始化 ContextWeft 本地状态：
+
+```bash
+ctxweft init --name "My workspace"
+ctxweft task start --title "Continue feature work" --goal "Ship the next verified change"
+ctxweft task status
+```
+
+通过 JSON 创建 checkpoint：
+
+```bash
+ctxweft checkpoint --work-item work_123 --input checkpoint.json
+```
+
+让下一个智能体继承上下文：
+
+```bash
+ctxweft bootstrap --work-item work_123 --intent "Continue implementation"
+```
+
+启动 MCP server：
+
+```bash
+ctxweft mcp
+```
+
+## MCP 客户端
+
+生成配置说明，不会修改用户本机配置：
+
+```bash
+ctxweft setup codex
+ctxweft setup cursor
+ctxweft setup claude-code
+```
+
+自动化场景可以使用 JSON 输出：
+
+```bash
+ctxweft setup cursor --json
+```
+
+当前 MCP server 暴露以下工具：
+
+- `contextweft.workspace_init`
+- `contextweft.work_item_start`
+- `contextweft.workspace_status`
+- `contextweft.checkpoint`
+- `contextweft.bootstrap`
+- `contextweft.search`
+- `contextweft.remember`
+- `contextweft.correct_fact`
+
+## 安全模型
+
+ContextWeft 把生成出来的 pack 和召回记忆都视为不可信证据。canonical state 保存在本地
+SQLite event log 中，derived memory 可以从 canonical events 重建。Phase 1 会拒绝
+路径穿越和敏感 artifact path，拒绝 symlink state directory，收紧本地状态文件权限，
+并在 canonical database 损坏时 fail closed。
+
+依赖例外记录在
+[docs/security/dependency-exceptions.md](docs/security/dependency-exceptions.md)。
+
+## 开发
+
+```bash
+pnpm format:check
+pnpm lint
+pnpm typecheck
+pnpm test
+pnpm test:performance
+pnpm build
+pnpm security:audit
+```
+
+完整验证命令：
+
+```bash
+pnpm check
+```
+
+运行 benchmark：
+
+```bash
+pnpm bench
+```
+
+## 架构说明
+
+- canonical events 是 append-only，并且与具体记忆引擎解耦。
+- OpenContext memory 是 derived recall index，不是 source of truth。
+- ContextPack 是确定性、受 token budget 约束、provenance-first 的交接载体。
+- MCP 是第一阶段公开互操作边界；后续可以在其上叠加原生编辑器集成。
+
+已实现的架构决策见 [docs/adr](docs/adr)。
 
 ## 开源协议
 
-本项目采用 Apache License 2.0，详情参见 [LICENSE](LICENSE)。
+Apache License 2.0。详情见 [LICENSE](LICENSE)。

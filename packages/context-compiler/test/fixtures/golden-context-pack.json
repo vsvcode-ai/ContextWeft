@@ -1,0 +1,199 @@
+{
+  "artifacts": [
+    {
+      "gitRevision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "id": "artifact_compiler",
+      "kind": "file",
+      "sourceEventIds": [
+        "evt_checkpoint",
+        "evt_constraint",
+        "evt_created",
+        "evt_decision",
+        "evt_failure",
+        "evt_progress"
+      ],
+      "title": "src/compiler.ts",
+      "uri": "file:///tmp/compiler/src/compiler.ts"
+    }
+  ],
+  "budget": { "limit": 2000, "omittedItemIds": [], "truncated": false, "used": 189 },
+  "completed": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "estimatedTokens": 8,
+      "id": "item:progress:completed:evt_progress",
+      "importance": 65,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_progress"],
+      "summary": "Compiler skeleton is complete"
+    }
+  ],
+  "constraints": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "details": "Kind: security",
+      "estimatedTokens": 9,
+      "id": "item:constraint:evt_constraint",
+      "importance": 100,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_constraint"],
+      "summary": "Never include secrets"
+    }
+  ],
+  "currentState": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "estimatedTokens": 6,
+      "id": "item:checkpoint:evt_checkpoint",
+      "importance": 96,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_checkpoint"],
+      "summary": "Ready to add renderers"
+    }
+  ],
+  "decisions": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "details": "Alternatives: Model-generated ordering",
+      "estimatedTokens": 17,
+      "id": "item:decision:evt_decision",
+      "importance": 85,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_decision"],
+      "summary": "Use deterministic ordering"
+    }
+  ],
+  "failedAttempts": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "details": "Reason: Exceeded token budget",
+      "estimatedTokens": 16,
+      "id": "item:failure:evt_failure",
+      "importance": 80,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_failure"],
+      "summary": "Tried raw transcript concatenation"
+    }
+  ],
+  "freshness": {
+    "checkpoint": {
+      "branch": "main",
+      "changedFiles": ["src/compiler.ts"],
+      "dirty": true,
+      "excludedSensitiveFiles": 0,
+      "fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "observedAt": "2026-08-31T12:00:00.000Z",
+      "repositoryRoot": "/tmp/compiler",
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "current": {
+      "branch": "main",
+      "changedFiles": ["src/compiler.ts"],
+      "dirty": true,
+      "excludedSensitiveFiles": 0,
+      "fingerprint": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "observedAt": "2026-08-31T12:00:00.000Z",
+      "repositoryRoot": "/tmp/compiler",
+      "revision": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    "reasons": [],
+    "status": "fresh"
+  },
+  "goal": {
+    "artifactIds": ["artifact_compiler"],
+    "estimatedTokens": 8,
+    "id": "item:goal:evt_created",
+    "importance": 100,
+    "occurredAt": "2026-08-31T12:00:00.000Z",
+    "sourceEventIds": ["evt_created"],
+    "summary": "Generate a trustworthy handoff."
+  },
+  "nextActions": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "estimatedTokens": 8,
+      "id": "item:next:0:evt_checkpoint",
+      "importance": 95,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_checkpoint"],
+      "summary": "Implement Markdown rendering"
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "estimatedTokens": 6,
+      "id": "item:next:1:evt_checkpoint",
+      "importance": 94,
+      "occurredAt": "2026-08-31T12:00:00.000Z",
+      "sourceEventIds": ["evt_checkpoint"],
+      "summary": "Add performance tests"
+    }
+  ],
+  "packId": "pack:5a88e1b4a67d934adf824e67fb75ac09",
+  "pending": [],
+  "provenance": [
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:goal:evt_created",
+      "sourceEventIds": ["evt_created"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:checkpoint:evt_checkpoint",
+      "sourceEventIds": ["evt_checkpoint"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:progress:completed:evt_progress",
+      "sourceEventIds": ["evt_progress"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:decision:evt_decision",
+      "sourceEventIds": ["evt_decision"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:constraint:evt_constraint",
+      "sourceEventIds": ["evt_constraint"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:failure:evt_failure",
+      "sourceEventIds": ["evt_failure"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:next:0:evt_checkpoint",
+      "sourceEventIds": ["evt_checkpoint"]
+    },
+    {
+      "artifactIds": ["artifact_compiler"],
+      "itemId": "item:next:1:evt_checkpoint",
+      "sourceEventIds": ["evt_checkpoint"]
+    }
+  ],
+  "relevantMemory": [],
+  "schemaVersion": "0.1",
+  "snapshotAt": "2026-08-31T12:00:00.000Z",
+  "tests": [],
+  "workItem": {
+    "createdAt": "2026-08-31T12:00:00.000Z",
+    "goal": "Generate a trustworthy handoff.",
+    "id": "work_compiler",
+    "metadata": {},
+    "schemaVersion": "0.1",
+    "status": "active",
+    "title": "Compile a handoff",
+    "updatedAt": "2026-08-31T12:00:00.000Z",
+    "workspaceId": "ws_compiler"
+  },
+  "workspace": {
+    "createdAt": "2026-08-31T12:00:00.000Z",
+    "id": "ws_compiler",
+    "metadata": {},
+    "name": "Compiler fixture",
+    "rootPath": "/tmp/compiler",
+    "schemaVersion": "0.1",
+    "updatedAt": "2026-08-31T12:00:00.000Z"
+  }
+}

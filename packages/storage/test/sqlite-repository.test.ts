@@ -1,4 +1,4 @@
-import { mkdtempSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -122,15 +122,31 @@ describe("SqliteCanonicalRepository", () => {
   it("survives close and reopen without changing canonical data", () => {
     const directory = mkdtempSync(join(tmpdir(), "contextweft-storage-"));
     const path = join(directory, "contextweft.db");
-    const first = new SqliteCanonicalRepository({ path });
-    first.putWorkspace(workspace);
-    first.putWorkItem(workItem);
-    first.appendEvent(decisionEvent());
-    first.close();
+    try {
+      const first = new SqliteCanonicalRepository({ path });
+      first.putWorkspace(workspace);
+      first.putWorkItem(workItem);
+      first.appendEvent(decisionEvent());
+      first.close();
 
-    const reopened = new SqliteCanonicalRepository({ path });
-    expect(reopened.getEvent("evt_000000")).toEqual(decisionEvent());
-    reopened.close();
+      const reopened = new SqliteCanonicalRepository({ path });
+      expect(reopened.getEvent("evt_000000")).toEqual(decisionEvent());
+      reopened.close();
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("fails closed instead of replacing a corrupted database", () => {
+    const directory = mkdtempSync(join(tmpdir(), "contextweft-corrupt-"));
+    const path = join(directory, "contextweft.db");
+    try {
+      writeFileSync(path, "not a sqlite database");
+      expect(() => new SqliteCanonicalRepository({ path })).toThrow();
+      expect(() => new SqliteCanonicalRepository({ path, readonly: true })).toThrow();
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
   });
 
   it("fails predictably after close", () => {

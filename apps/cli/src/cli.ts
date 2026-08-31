@@ -9,6 +9,11 @@ import {
   toCreateCheckpointInput,
   type CheckpointPayload,
 } from "@contextweft/mcp-server";
+import {
+  formatAgentSetupGuide,
+  generateAgentSetupGuide,
+  parseSupportedAgent,
+} from "./agent-config.js";
 import { inspectContextWeft } from "./doctor.js";
 import { CliUsageError, WorkspaceNotInitializedError } from "./errors.js";
 import type { CliIo } from "./io.js";
@@ -93,6 +98,9 @@ export async function runCli(
     }
     if (command === "doctor") {
       return await runDoctor([subcommand, ...rest].filter(isDefined), cwd, io);
+    }
+    if (command === "setup") {
+      return runSetup([subcommand, ...rest].filter(isDefined), io);
     }
     if (command === "mcp") {
       return await runMcp([subcommand, ...rest].filter(isDefined), cwd, io, openRuntime);
@@ -360,6 +368,24 @@ async function runDoctor(args: readonly string[], cwd: string, io: CliIo): Promi
   return report.ok ? 0 : 1;
 }
 
+function runSetup(args: readonly string[], io: CliIo): number {
+  const [agent, ...rest] = args;
+  const parsed = parseOptions(rest, {
+    command: { type: "string" },
+    "server-name": { type: "string" },
+    json: { type: "boolean" },
+  });
+  const command = stringOption(parsed, "command");
+  const serverName = stringOption(parsed, "server-name");
+  const guide = generateAgentSetupGuide({
+    agent: parseSupportedAgent(agent),
+    ...(command === undefined ? {} : { command }),
+    ...(serverName === undefined ? {} : { serverName }),
+  });
+  io.stdout(booleanOption(parsed, "json") ? canonicalJson(guide) : formatAgentSetupGuide(guide));
+  return 0;
+}
+
 async function runMcp(
   args: readonly string[],
   cwd: string,
@@ -512,5 +538,6 @@ Usage:
   ctxweft correct --work-item ID --target-event ID --content TEXT --reason TEXT [--json]
   ctxweft memory rebuild [--json]
   ctxweft doctor [--json]
+  ctxweft setup <codex|cursor|claude-code> [--command CMD] [--server-name NAME] [--json]
   ctxweft mcp`;
 }

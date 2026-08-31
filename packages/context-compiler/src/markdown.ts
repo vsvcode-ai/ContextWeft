@@ -1,5 +1,7 @@
 import type { ContextPack, ContextPackItem } from "@contextweft/contracts";
 
+const END_BOUNDARY = "--- END CONTEXTWEFT EVIDENCE ---";
+
 export function renderContextPackMarkdown(pack: ContextPack): string {
   const sections: string[] = [
     "# ContextWeft ContextPack",
@@ -45,7 +47,7 @@ export function renderContextPackMarkdown(pack: ContextPack): string {
     }
   }
 
-  sections.push("", "--- END CONTEXTWEFT EVIDENCE ---", "");
+  sections.push("", END_BOUNDARY, "");
   return sections.join("\n");
 }
 
@@ -69,5 +71,9 @@ function itemMarkdown(item: ContextPackItem): string {
 }
 
 function inline(value: string): string {
-  return value.replaceAll("`", "\\`").replaceAll("\r", " ").replaceAll("\n", " ");
+  return value
+    .replaceAll("`", "\\`")
+    .replaceAll("\r", " ")
+    .replaceAll("\n", " ")
+    .replaceAll(END_BOUNDARY, "--- END CONTEXTWEFT EVIDENCE (quoted) ---");
 }
