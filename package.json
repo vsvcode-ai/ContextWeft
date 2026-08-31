@@ -26,6 +26,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "2.5.11",
+    "@types/better-sqlite3": "9.6.0",
     "@types/node": "24.3.0",
     "@vitest/coverage-v8": "4.1.11",
     "fast-check": "4.9.0",
