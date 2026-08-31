@@ -100,6 +100,29 @@ export class FakeOpenContextManager implements OpenContextRawMessageManager {
   public async getMessageById(messageId: string) {
     return this.messages.get(messageId) ?? null;
   }
+
+  public async lexicalSearchMessages(input: {
+    readonly userId: string;
+    readonly keywords: readonly string[];
+    readonly limit: number;
+    readonly botId: "contextweft";
+  }) {
+    return [...this.messages.values()]
+      .filter(
+        (message) =>
+          !message.deprecated &&
+          message.userId === input.userId &&
+          message.botId === input.botId &&
+          input.keywords.some((word) => message.content.toLowerCase().includes(word)),
+      )
+      .slice(0, input.limit)
+      .map((message) => ({
+        id: message.messageId,
+        content: message.content,
+        similarity: 0.9,
+        metadata: { channel: message.channel, timestamp: message.timestamp },
+      }));
+  }
 }
 
 export class FakeOpenContextStore implements OpenContextStore {

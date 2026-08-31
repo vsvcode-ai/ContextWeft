@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 export default defineConfig({
   resolve: {
     alias: {
+      "@contextweft/cli": fileURLToPath(new URL("./apps/cli/src/index.ts", import.meta.url)),
       "@contextweft/application": fileURLToPath(
         new URL("./packages/application/src/index.ts", import.meta.url),
       ),
@@ -15,6 +16,9 @@ export default defineConfig({
       ),
       "@contextweft/git-adapter": fileURLToPath(
         new URL("./packages/git-adapter/src/index.ts", import.meta.url),
+      ),
+      "@contextweft/mcp-server": fileURLToPath(
+        new URL("./packages/mcp-server/src/index.ts", import.meta.url),
       ),
       "@contextweft/opencontext-adapter": fileURLToPath(
         new URL("./packages/opencontext-adapter/src/index.ts", import.meta.url),

@@ -16,10 +16,12 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "paths": {
+      "@contextweft/cli": ["./apps/cli/src/index.ts"],
       "@contextweft/application": ["./packages/application/src/index.ts"],
       "@contextweft/context-compiler": ["./packages/context-compiler/src/index.ts"],
       "@contextweft/contracts": ["./packages/contracts/src/index.ts"],
       "@contextweft/git-adapter": ["./packages/git-adapter/src/index.ts"],
+      "@contextweft/mcp-server": ["./packages/mcp-server/src/index.ts"],
       "@contextweft/opencontext-adapter": ["./packages/opencontext-adapter/src/index.ts"],
       "@contextweft/storage": ["./packages/storage/src/index.ts"]
     },

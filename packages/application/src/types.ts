@@ -5,6 +5,7 @@ import type {
   WorkItem,
   Workspace,
 } from "@contextweft/contracts";
+import type { MemoryRecall } from "@contextweft/context-compiler";
 import type { RequestIdentity } from "./ports.js";
 
 export interface InitializeWorkspaceInput extends RequestIdentity {
@@ -88,6 +89,13 @@ export interface CorrectMemoryInput extends RequestIdentity {
   readonly reason: string;
 }
 
+export interface SearchMemoryInput {
+  readonly workspaceId: string;
+  readonly workItemId: string;
+  readonly query: string;
+  readonly limit?: number;
+}
+
 export interface BootstrapInput {
   readonly workspaceId: string;
   readonly workItemId: string;
@@ -118,6 +126,11 @@ export interface MemoryWriteResult {
 
 export interface MemoryRebuildResult {
   readonly eventsProcessed: number;
+}
+
+export interface SearchMemoryResult {
+  readonly results: readonly MemoryRecall[];
+  readonly warnings: readonly string[];
 }
 
 export interface WorkspaceStatus {

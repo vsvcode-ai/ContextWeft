@@ -21,3 +21,7 @@ export interface Clock {
 export interface GitSnapshotProvider {
   capture(workspaceRoot: string): Promise<GitSnapshot>;
 }
+
+export interface GitWorkspaceLocator {
+  locate(startPath: string): Promise<string>;
+}

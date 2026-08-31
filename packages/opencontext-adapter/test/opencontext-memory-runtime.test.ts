@@ -129,4 +129,27 @@ describe("OpenContextMemoryRuntime", () => {
       await rm(directory, { recursive: true, force: true });
     }
   });
+
+  it("persists recall across runtime restarts", async () => {
+    const directory = await mkdtemp(join(tmpdir(), "contextweft-opencontext-restart-"));
+    const databasePath = join(directory, "memory.db");
+    const event = memoryRecorded();
+    const first = await OpenContextMemoryRuntime.open({ dbPath: databasePath });
+    await first.ingest([event]);
+    await first.close();
+
+    const second = await OpenContextMemoryRuntime.open({ dbPath: databasePath });
+    try {
+      const recalls = await second.search({
+        workspaceId: event.workspaceId,
+        workItemId: event.workItemId ?? "",
+        query: "deterministic provenance",
+        limit: 10,
+      });
+      expect(recalls.map((recall) => recall.id)).toContain(event.eventId);
+    } finally {
+      await second.close();
+      await rm(directory, { recursive: true, force: true });
+    }
+  });
 });

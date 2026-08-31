@@ -2,7 +2,7 @@ import { resolve } from "node:path";
 import type { MemoryRuntime, MemorySearchRequest } from "@contextweft/application";
 import type { MemoryRecall } from "@contextweft/context-compiler";
 import type { ContextEvent } from "@contextweft/contracts";
-import { createMemoryStore } from "@melandlabs/memory-store";
+import { createRawMessageStore } from "@melandlabs/memory-store";
 import { OpenContextCompatibilityError, OpenContextRuntimeStateError } from "./errors.js";
 import type {
   OpenContextFactoryOptions,
@@ -16,7 +16,6 @@ import type {
 
 const PLATFORM = "contextweft" as const;
 const EXPECTED_OPENCONTEXT_VERSION = "@melandlabs/memory-store 1.2.x";
-const SILENT_LOGGER = { log() {}, warn() {}, error() {} };
 
 let activeDefaultRuntime: OpenContextMemoryRuntime | undefined;
 let defaultRuntimeOpening = false;
@@ -71,6 +70,14 @@ export class OpenContextMemoryRuntime implements MemoryRuntime {
       const candidate = await factory({ dbPath: databasePath });
       const store = assertOpenContextStore(candidate);
       const runtime = new OpenContextMemoryRuntime(store, databasePath, usesDefaultFactory);
+      try {
+        // Open eagerly so startup reports path, native-module, and upstream API
+        // failures before the application claims memory is available.
+        await runtime.#getManager();
+      } catch (error) {
+        await store.raw.close();
+        throw error;
+      }
       if (usesDefaultFactory) {
         activeDefaultRuntime = runtime;
       }
@@ -88,21 +95,19 @@ export class OpenContextMemoryRuntime implements MemoryRuntime {
 
   public async search(request: MemorySearchRequest): Promise<readonly MemoryRecall[]> {
     this.#assertOpen();
-    const output = await this.#store.searchUnifiedMemory({
-      userId: workspaceScope(request.workspaceId),
-      query: request.query,
-      sources: ["memory"],
-      limit: normalizeLimit(request.limit),
-      botIds: [PLATFORM],
-      reasoningStrategy: "none",
-    });
-    if (!isRecord(output) || !Array.isArray(output.results)) {
-      throw compatibilityError("searchUnifiedMemory() returned an invalid result");
+    const keywords = lexicalKeywords(request.query);
+    if (keywords.length === 0) {
+      return [];
     }
-
     const manager = await this.#getManager();
+    const hits = await manager.lexicalSearchMessages({
+      userId: workspaceScope(request.workspaceId),
+      keywords,
+      limit: normalizeLimit(request.limit),
+      botId: PLATFORM,
+    });
     const recalls = await Promise.all(
-      output.results.map(async (hit) => this.#toRecall(hit, request, manager)),
+      hits.map(async (hit) => this.#toRecall(hit, request, manager)),
     );
     return recalls
       .filter((recall): recall is MemoryRecall => recall !== undefined)
@@ -203,10 +208,11 @@ export class OpenContextMemoryRuntime implements MemoryRuntime {
 }
 
 async function defaultOpenContextFactory(options: OpenContextFactoryOptions): Promise<unknown> {
-  return createMemoryStore({
-    dbPath: options.dbPath,
-    logger: SILENT_LOGGER,
-  });
+  const raw = createRawMessageStore({ dbPath: options.dbPath });
+  return {
+    raw,
+    getRawMessageManager: () => raw.getManager(),
+  };
 }
 
 function normalizeDatabasePath(path: string): string {
@@ -287,6 +293,14 @@ function normalizeLimit(limit: number): number {
   return Number.isFinite(limit) ? Math.min(50, Math.max(1, Math.floor(limit))) : 10;
 }
 
+function lexicalKeywords(query: string): readonly string[] {
+  return query
+    .toLowerCase()
+    .split(/[^\p{L}\p{N}]+/u)
+    .filter((token) => token.length >= 2)
+    .slice(0, 16);
+}
+
 function parseTimestamp(value: string): number {
   const timestamp = Date.parse(value);
   if (!Number.isFinite(timestamp)) {
@@ -318,8 +332,7 @@ function assertOpenContextStore(candidate: unknown): OpenContextStore {
     !isRecord(candidate) ||
     !isRecord(candidate.raw) ||
     typeof candidate.raw.close !== "function" ||
-    typeof candidate.getRawMessageManager !== "function" ||
-    typeof candidate.searchUnifiedMemory !== "function"
+    typeof candidate.getRawMessageManager !== "function"
   ) {
     throw compatibilityError("createMemoryStore() returned an incompatible store");
   }
@@ -331,7 +344,8 @@ function assertRawMessageManager(candidate: unknown): OpenContextRawMessageManag
     !isRecord(candidate) ||
     typeof candidate.storeMessages !== "function" ||
     typeof candidate.deprecateMessages !== "function" ||
-    typeof candidate.getMessageById !== "function"
+    typeof candidate.getMessageById !== "function" ||
+    typeof candidate.lexicalSearchMessages !== "function"
   ) {
     throw compatibilityError("OpenContext raw message manager is incompatible");
   }
@@ -349,10 +363,10 @@ interface RuntimeRecord {
   readonly raw?: unknown;
   readonly close?: unknown;
   readonly getRawMessageManager?: unknown;
-  readonly searchUnifiedMemory?: unknown;
   readonly storeMessages?: unknown;
   readonly deprecateMessages?: unknown;
   readonly getMessageById?: unknown;
+  readonly lexicalSearchMessages?: unknown;
   readonly channel?: unknown;
   readonly timestamp?: unknown;
   readonly sourceEventIds?: unknown;

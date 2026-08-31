@@ -32,3 +32,24 @@ export class NullMemoryRuntime implements MemoryRuntime {
 
   public async rebuild(): Promise<void> {}
 }
+
+/** Memory port used when an optional runtime could not be initialized. */
+export class UnavailableMemoryRuntime implements MemoryRuntime {
+  readonly #reason: string;
+
+  public constructor(reason: string) {
+    this.#reason = reason;
+  }
+
+  public async search(): Promise<readonly MemoryRecall[]> {
+    throw new Error(this.#reason);
+  }
+
+  public async ingest(): Promise<void> {
+    throw new Error(this.#reason);
+  }
+
+  public async rebuild(): Promise<void> {
+    throw new Error(this.#reason);
+  }
+}

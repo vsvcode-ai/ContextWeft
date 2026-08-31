@@ -1,5 +1,5 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, realpathSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
@@ -50,9 +50,9 @@ describe("GitAdapter", () => {
   it("does not silently widen a workspace to a parent repository", async () => {
     const root = createRepository();
     const nested = join(root, "src");
+    const adapter = new GitAdapter({ clock: fixedClock });
 
-    await expect(new GitAdapter({ clock: fixedClock }).capture(nested)).rejects.toBeInstanceOf(
-      WorkspaceRootMismatchError,
-    );
+    await expect(adapter.locate(nested)).resolves.toBe(realpathSync(root));
+    await expect(adapter.capture(nested)).rejects.toBeInstanceOf(WorkspaceRootMismatchError);
   });
 });

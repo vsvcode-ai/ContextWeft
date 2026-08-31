@@ -38,6 +38,12 @@ export interface OpenContextRawMessageManager {
     },
   ): Promise<number>;
   getMessageById(messageId: string): Promise<OpenContextStoredMessage | null>;
+  lexicalSearchMessages(input: {
+    readonly userId: string;
+    readonly keywords: readonly string[];
+    readonly limit: number;
+    readonly botId: "contextweft";
+  }): Promise<readonly OpenContextSearchHit[]>;
 }
 
 export interface OpenContextSearchHit {
@@ -47,23 +53,11 @@ export interface OpenContextSearchHit {
   readonly metadata: unknown;
 }
 
-export interface OpenContextSearchOutput {
-  readonly results: readonly OpenContextSearchHit[];
-}
-
 export interface OpenContextStore {
   readonly raw: {
     close(): Promise<void>;
   };
   getRawMessageManager(): Promise<OpenContextRawMessageManager>;
-  searchUnifiedMemory(input: {
-    readonly userId: string;
-    readonly query: string;
-    readonly sources: readonly ["memory"];
-    readonly limit: number;
-    readonly botIds: readonly ["contextweft"];
-    readonly reasoningStrategy: "none";
-  }): Promise<OpenContextSearchOutput>;
 }
 
 export interface OpenContextFactoryOptions {

@@ -49,6 +49,30 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@opentelemetry/api@1.9.0)(@types/node@24.3.0)(@vitest/coverage-v8@4.1.11)(esbuild@0.28.2)(tsx@4.23.13)(yaml@2.9.0)
 
+  apps/cli:
+    dependencies:
+      '@contextweft/application':
+        specifier: workspace:*
+        version: link:../../packages/application
+      '@contextweft/contracts':
+        specifier: workspace:*
+        version: link:../../packages/contracts
+      '@contextweft/git-adapter':
+        specifier: workspace:*
+        version: link:../../packages/git-adapter
+      '@contextweft/mcp-server':
+        specifier: workspace:*
+        version: link:../../packages/mcp-server
+      '@contextweft/opencontext-adapter':
+        specifier: workspace:*
+        version: link:../../packages/opencontext-adapter
+      '@contextweft/storage':
+        specifier: workspace:*
+        version: link:../../packages/storage
+      zod:
+        specifier: 4.5.4
+        version: 4.5.4
+
   packages/application:
     dependencies:
       '@contextweft/context-compiler':
@@ -81,6 +105,25 @@ importers:
       '@contextweft/contracts':
         specifier: workspace:*
         version: link:../contracts
+
+  packages/mcp-server:
+    dependencies:
+      '@contextweft/application':
+        specifier: workspace:*
+        version: link:../application
+      '@contextweft/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@modelcontextprotocol/server':
+        specifier: 2.0.0
+        version: 2.0.0
+      zod:
+        specifier: 4.5.4
+        version: 4.5.4
+    devDependencies:
+      '@modelcontextprotocol/client':
+        specifier: 2.0.0
+        version: 2.0.0
 
   packages/opencontext-adapter:
     dependencies:
@@ -1136,6 +1179,14 @@ packages:
   '@melandlabs/vsa@0.3.0':
     resolution: {integrity: sha512-ztexmVlIpsasASFGm9enzvTRpgxyIZCRYIY+nnqpd4u4eb0P1T999Yj2wMM/cN4Vcws3BwpxZDF7lQ6UnzbETw==, tarball: https://registry.npmjs.org/@melandlabs/vsa/-/vsa-0.3.0.tgz}
 
+  '@modelcontextprotocol/client@2.0.0':
+    resolution: {integrity: sha512-8f1OghQ2rjzIOfqgUCP+8GiUWqRs89njoWLNqAe8kWmDePv3s1fZXseej+QXemssEuuOvLLmLO/kqM3IQHtISw==}
+    engines: {node: '>=20'}
+
+  '@modelcontextprotocol/core@2.0.0':
+    resolution: {integrity: sha512-pJCEwGG7Lfr/+PQp9ZTwKXNeO5wzbfKL7H3MYpCorM4oFBoQrdjnBgEoqG+RjhsvS1FKrDbKux+M1HhlnGWqcA==}
+    engines: {node: '>=20'}
+
   '@modelcontextprotocol/sdk@1.30.0':
     resolution: {integrity: sha512-xKd8OIzlqNzcqcNumGAa6g+PW2kjD5vrpcKOnfldAUPP3j7lnqMPwlTXQm8gF+UwH72z0lqaRbjr9hqGz0eITA==}
     engines: {node: '>=18'}
@@ -1144,6 +1195,10 @@ packages:
     peerDependenciesMeta:
       '@cfworker/json-schema':
         optional: true
+
+  '@modelcontextprotocol/server@2.0.0':
+    resolution: {integrity: sha512-YhHWdHfpFMQfd0prsEnxKeS3Qz3ytIGmsS0sth4KDjnacIT7hxk6hXHkJ9KysxlkvTM+WZAtQbbcUhdoP4Hvtw==}
+    engines: {node: '>=20'}
 
   '@napi-rs/canvas-android-arm64@0.1.100':
     resolution: {integrity: sha512-hjhCKhntPv9+t4ckHymdx0phYNcVW+GKQR6Lzw2zE+pOVjOplSmtx9nNNknTjbEDLcuLZqA1y8ufKg1XfgftzQ==}
@@ -4022,6 +4077,20 @@ snapshots:
 
   '@melandlabs/vsa@0.3.0': {}
 
+  '@modelcontextprotocol/client@2.0.0':
+    dependencies:
+      '@modelcontextprotocol/core': 2.0.0
+      cross-spawn: 7.0.6
+      eventsource: 3.0.7
+      eventsource-parser: 3.1.1
+      jose: 6.2.10
+      pkce-challenge: 5.0.1
+      zod: 4.5.4
+
+  '@modelcontextprotocol/core@2.0.0':
+    dependencies:
+      zod: 4.5.4
+
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)':
     dependencies:
       '@hono/node-server': 1.19.17(hono@4.13.5)
@@ -4045,6 +4114,11 @@ snapshots:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
       - supports-color
+
+  '@modelcontextprotocol/server@2.0.0':
+    dependencies:
+      '@modelcontextprotocol/core': 2.0.0
+      zod: 4.5.4
 
   '@napi-rs/canvas-android-arm64@0.1.100':
     optional: true

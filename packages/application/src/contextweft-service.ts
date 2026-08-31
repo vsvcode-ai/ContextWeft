@@ -43,6 +43,8 @@ import type {
   MemoryRebuildResult,
   MemoryWriteResult,
   RecordMemoryInput,
+  SearchMemoryInput,
+  SearchMemoryResult,
   StartWorkItemInput,
   WorkspaceStatus,
 } from "./types.js";
@@ -328,6 +330,25 @@ export class ContextWeftService {
     });
     await this.#memory.rebuild(workspaceId, events);
     return { eventsProcessed: events.length };
+  }
+
+  public async searchMemory(input: SearchMemoryInput): Promise<SearchMemoryResult> {
+    this.#requireWorkspace(input.workspaceId);
+    this.#requireWorkItem(input.workItemId, input.workspaceId);
+    try {
+      const results = await this.#memory.search({
+        workspaceId: input.workspaceId,
+        workItemId: input.workItemId,
+        query: input.query,
+        limit: input.limit ?? 10,
+      });
+      return { results, warnings: [] };
+    } catch (error) {
+      return {
+        results: [],
+        warnings: [`Long-term memory search is unavailable (${errorMessage(error)}).`],
+      };
+    }
   }
 
   public async bootstrap(input: BootstrapInput): Promise<BootstrapResult> {

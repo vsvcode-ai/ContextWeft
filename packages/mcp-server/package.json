@@ -1,0 +1,35 @@
+{
+  "name": "@contextweft/mcp-server",
+  "version": "0.0.0-development",
+  "description": "Stable MCP tool surface for ContextWeft application services.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bench": "tsx bench/mcp-server.bench.ts",
+    "build": "rm -rf dist && tsup src/index.ts --format esm --sourcemap --external @modelcontextprotocol/server && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@contextweft/application": "workspace:*",
+    "@contextweft/contracts": "workspace:*",
+    "@modelcontextprotocol/server": "2.0.0",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/client": "2.0.0"
+  }
+}

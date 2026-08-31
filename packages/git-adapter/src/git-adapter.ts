@@ -8,6 +8,7 @@ import type {
   GitCommandResult,
   GitCommandRunner,
   GitSnapshotProvider,
+  GitWorkspaceLocator,
   SensitivePathPolicy,
 } from "./ports.js";
 import { DefaultSensitivePathPolicy } from "./sensitive-path-policy.js";
@@ -24,7 +25,7 @@ export interface GitAdapterOptions {
   readonly clock?: Clock;
 }
 
-export class GitAdapter implements GitSnapshotProvider {
+export class GitAdapter implements GitSnapshotProvider, GitWorkspaceLocator {
   readonly #runner: GitCommandRunner;
   readonly #sensitivePathPolicy: SensitivePathPolicy;
   readonly #clock: Clock;
@@ -37,15 +38,7 @@ export class GitAdapter implements GitSnapshotProvider {
 
   public async capture(workspaceRoot: string): Promise<GitSnapshot> {
     const resolvedWorkspaceRoot = await realpath(workspaceRoot);
-    const rootResult = await this.#runner.run(
-      ["rev-parse", "--path-format=absolute", "--show-toplevel"],
-      resolvedWorkspaceRoot,
-    );
-    if (rootResult.exitCode !== 0) {
-      throw new NotGitRepositoryError(resolvedWorkspaceRoot);
-    }
-
-    const resolvedRepositoryRoot = await realpath(rootResult.stdout.trim());
+    const resolvedRepositoryRoot = await this.locate(resolvedWorkspaceRoot);
     if (resolvedRepositoryRoot !== resolvedWorkspaceRoot) {
       throw new WorkspaceRootMismatchError(resolvedWorkspaceRoot, resolvedRepositoryRoot);
     }
@@ -88,6 +81,19 @@ export class GitAdapter implements GitSnapshotProvider {
       observedAt: this.#clock.now().toISOString(),
       fingerprint,
     });
+  }
+
+  /** Resolves a file or nested directory to its containing Git repository root. */
+  public async locate(startPath: string): Promise<string> {
+    const resolvedStartPath = await realpath(startPath);
+    const rootResult = await this.#runner.run(
+      ["rev-parse", "--path-format=absolute", "--show-toplevel"],
+      resolvedStartPath,
+    );
+    if (rootResult.exitCode !== 0) {
+      throw new NotGitRepositoryError(resolvedStartPath);
+    }
+    return realpath(rootResult.stdout.trim());
   }
 
   async #changedPaths(repositoryRoot: string, hasHead: boolean): Promise<readonly string[]> {

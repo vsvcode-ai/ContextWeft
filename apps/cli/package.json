@@ -1,0 +1,38 @@
+{
+  "name": "@contextweft/cli",
+  "version": "0.0.0-development",
+  "description": "ContextWeft command-line interface and MCP stdio entrypoint.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "bin": {
+    "ctxweft": "./dist/main.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bench": "tsx bench/cli.bench.ts",
+    "build": "rm -rf dist && tsup src/index.ts src/main.ts --format esm --sourcemap --external better-sqlite3 --external @melandlabs/memory-store && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@contextweft/application": "workspace:*",
+    "@contextweft/contracts": "workspace:*",
+    "@contextweft/git-adapter": "workspace:*",
+    "@contextweft/mcp-server": "workspace:*",
+    "@contextweft/opencontext-adapter": "workspace:*",
+    "@contextweft/storage": "workspace:*",
+    "zod": "4.5.4"
+  }
+}
