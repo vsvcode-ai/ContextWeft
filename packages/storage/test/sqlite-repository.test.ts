@@ -32,6 +32,9 @@ describe("SqliteCanonicalRepository", () => {
     expect(repository.getWorkItem(workItem.id)).toEqual(workItem);
     expect(repository.getArtifact(artifact.id)).toEqual(artifact);
     expect(repository.getEvent("evt_000000")).toEqual(decisionEvent());
+    expect(repository.getEventByIdempotencyKey(workspace.id, "idem_000000")).toEqual(
+      decisionEvent(),
+    );
     repository.close();
   });
 
@@ -77,6 +80,22 @@ describe("SqliteCanonicalRepository", () => {
 
     expect(() => repository.appendEvents([decisionEvent(), invalid])).toThrow(EntityNotFoundError);
     expect(repository.countEvents(workspace.id)).toBe(0);
+    repository.close();
+  });
+
+  it("rolls back a complete application unit of work", () => {
+    const repository = memoryRepository();
+
+    expect(() =>
+      repository.transaction(() => {
+        repository.putArtifact(artifact);
+        repository.appendEvent(decisionEvent());
+        throw new Error("simulated process failure");
+      }),
+    ).toThrow("simulated process failure");
+
+    expect(repository.getArtifact(artifact.id)).toBeUndefined();
+    expect(repository.getEvent("evt_000000")).toBeUndefined();
     repository.close();
   });
 

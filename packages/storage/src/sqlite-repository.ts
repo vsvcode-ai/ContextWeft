@@ -321,6 +321,17 @@ export class SqliteCanonicalRepository implements CanonicalRepository {
     return row === undefined ? undefined : decodeEvent(row);
   }
 
+  public getEventByIdempotencyKey(
+    workspaceId: string,
+    idempotencyKey: string,
+  ): ContextEvent | undefined {
+    this.#assertOpen();
+    const row = this.#database
+      .prepare("SELECT * FROM context_events WHERE workspace_id = ? AND idempotency_key = ?")
+      .get(workspaceId, idempotencyKey) as EventRow | undefined;
+    return row === undefined ? undefined : decodeEvent(row);
+  }
+
   public listEvents(query: EventQuery): readonly ContextEvent[] {
     this.#assertOpen();
     const conditions = ["workspace_id = @workspaceId"];
@@ -374,6 +385,11 @@ export class SqliteCanonicalRepository implements CanonicalRepository {
             )
             .get(workspaceId, workItemId) as { count: number });
     return row.count;
+  }
+
+  public transaction<T>(operation: () => T): T {
+    this.#assertOpen();
+    return this.#database.transaction(operation)();
   }
 
   public close(): void {

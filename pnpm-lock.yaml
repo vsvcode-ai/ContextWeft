@@ -45,6 +45,27 @@ importers:
         specifier: 4.1.11
         version: 4.1.11(@types/node@24.3.0)(@vitest/coverage-v8@4.1.11)(esbuild@0.28.2)(tsx@4.23.13)
 
+  packages/application:
+    dependencies:
+      '@contextweft/context-compiler':
+        specifier: workspace:*
+        version: link:../context-compiler
+      '@contextweft/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+      '@contextweft/git-adapter':
+        specifier: workspace:*
+        version: link:../git-adapter
+      '@contextweft/storage':
+        specifier: workspace:*
+        version: link:../storage
+
+  packages/context-compiler:
+    dependencies:
+      '@contextweft/contracts':
+        specifier: workspace:*
+        version: link:../contracts
+
   packages/contracts:
     dependencies:
       '@sinclair/typebox':

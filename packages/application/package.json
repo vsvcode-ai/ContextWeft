@@ -1,0 +1,32 @@
+{
+  "name": "@contextweft/application",
+  "version": "0.0.0-development",
+  "description": "ContextWeft application services for checkpoints, handoffs, and bootstrapping.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bench": "tsx bench/application.bench.ts",
+    "build": "rm -rf dist && tsup src/index.ts --format esm --sourcemap && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@contextweft/context-compiler": "workspace:*",
+    "@contextweft/contracts": "workspace:*",
+    "@contextweft/git-adapter": "workspace:*",
+    "@contextweft/storage": "workspace:*"
+  }
+}

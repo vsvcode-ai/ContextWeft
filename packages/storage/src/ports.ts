@@ -24,6 +24,7 @@ export interface EventStore {
   appendEvent(event: ContextEvent): AppendResult;
   appendEvents(events: readonly ContextEvent[]): readonly AppendResult[];
   getEvent(eventId: string): ContextEvent | undefined;
+  getEventByIdempotencyKey(workspaceId: string, idempotencyKey: string): ContextEvent | undefined;
   listEvents(query: EventQuery): readonly ContextEvent[];
   countEvents(workspaceId: string, workItemId?: string): number;
 }
@@ -54,5 +55,6 @@ export interface CanonicalRepository
     WorkItemRepository,
     ArtifactRepository {
   readonly schemaVersion: number;
+  transaction<T>(operation: () => T): T;
   close(): void;
 }

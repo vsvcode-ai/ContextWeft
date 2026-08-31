@@ -6,6 +6,7 @@
     "emitDeclarationOnly": true,
     "noEmit": false,
     "outDir": "dist",
+    "paths": {},
     "rootDir": "src"
   },
   "include": ["src/**/*.ts"],
