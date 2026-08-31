@@ -1,0 +1,7 @@
+{
+  "scenario": "failed-attempt",
+  "expected": {
+    "freshness": "fresh",
+    "sections": ["goal", "failedAttempts", "pending", "nextActions"]
+  }
+}

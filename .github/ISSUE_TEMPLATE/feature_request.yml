@@ -1,0 +1,25 @@
+name: Feature request
+description: Propose a scoped addition to an implemented capability.
+title: "feat: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the user problem without prescribing an implementation.
+    validations:
+      required: true
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Desired outcome
+    validations:
+      required: true
+  - type: textarea
+    id: compatibility
+    attributes:
+      label: Compatibility and extension impact
+      description: Note effects on contracts, storage, MCP clients, privacy, or performance.
+    validations:
+      required: true

@@ -1,0 +1,29 @@
+{
+  "name": "@contextweft/contracts",
+  "version": "0.0.0-development",
+  "description": "Versioned ContextWeft domain contracts and JSON Schemas.",
+  "type": "module",
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "bench": "tsx bench/validation.bench.ts",
+    "build": "rm -rf dist && tsup src/index.ts --format esm --sourcemap && tsc -p tsconfig.build.json",
+    "clean": "rm -rf dist",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@sinclair/typebox": "catalog:"
+  }
+}

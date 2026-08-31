@@ -1,0 +1,13 @@
+node_modules/
+dist/
+coverage/
+.turbo/
+*.tsbuildinfo
+*.db
+*.db-shm
+*.db-wal
+*.log
+.DS_Store
+
+# Local runtime state created by ContextWeft.
+.contextweft/

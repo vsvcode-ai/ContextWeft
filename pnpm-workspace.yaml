@@ -1,0 +1,6 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+catalog:
+  "@sinclair/typebox": 0.34.52

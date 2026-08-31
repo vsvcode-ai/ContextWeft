@@ -1,0 +1,7 @@
+{
+  "scenario": "normal-handoff",
+  "expected": {
+    "freshness": "fresh",
+    "sections": ["goal", "completed", "pending", "decisions", "nextActions"]
+  }
+}

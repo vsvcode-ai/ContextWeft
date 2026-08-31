@@ -1,0 +1,7 @@
+{
+  "scenario": "stale-workspace",
+  "expected": {
+    "freshness": "revision-diverged",
+    "sections": ["goal", "currentState", "pending"]
+  }
+}
