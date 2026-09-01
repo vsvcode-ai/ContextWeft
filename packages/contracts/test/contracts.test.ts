@@ -23,6 +23,7 @@ describe("contract validation", () => {
   it("accepts a valid discriminated context event", () => {
     expect(isContextEvent(decisionEventFixture)).toBe(true);
     expect(parseContextEvent(decisionEventFixture)).toEqual(decisionEventFixture);
+    expect(isContextEvent(null)).toBe(false);
   });
 
   it("reports precise paths for invalid event payloads", () => {
@@ -54,6 +55,16 @@ describe("contract validation", () => {
   it("rejects timestamps that are not normalized to UTC", () => {
     expect(() =>
       parseWorkspace({ ...workspaceFixture, createdAt: "2026-08-31T17:00:00+08:00" }),
+    ).toThrow(ContractValidationError);
+  });
+
+  it("falls back to full union validation when an event discriminator is absent or unknown", () => {
+    expect(() => parseContextEvent(null)).toThrow(ContractValidationError);
+    expect(() => parseContextEvent({ ...decisionEventFixture, eventType: 42 })).toThrow(
+      ContractValidationError,
+    );
+    expect(() =>
+      parseContextEvent({ ...decisionEventFixture, eventType: "unknown.event" }),
     ).toThrow(ContractValidationError);
   });
 });

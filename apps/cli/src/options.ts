@@ -14,8 +14,12 @@ export function parseOptions(
   const values = new Map<string, string | true>();
   for (let index = 0; index < args.length; index += 1) {
     const token = args[index];
-    if (token === undefined || !token.startsWith("--") || token === "--") {
-      throw new CliUsageError(`Unexpected positional argument: ${token ?? ""}`);
+    /* v8 ignore next -- loop bounds guarantee an indexed token exists. */
+    if (token === undefined) {
+      throw new CliUsageError("Unexpected positional argument: ");
+    }
+    if (!token.startsWith("--") || token === "--") {
+      throw new CliUsageError(`Unexpected positional argument: ${token}`);
     }
     const equalsIndex = token.indexOf("=");
     const name = token.slice(2, equalsIndex === -1 ? undefined : equalsIndex);

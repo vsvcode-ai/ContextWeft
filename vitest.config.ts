@@ -30,11 +30,11 @@ export default defineConfig({
   },
   test: {
     coverage: {
-      exclude: ["**/dist/**", "**/bench/**", "**/*.d.ts"],
+      exclude: ["**/dist/**", "**/bench/**", "**/test/**", "**/*.d.ts"],
       provider: "v8",
       reporter: ["text", "json-summary"],
       thresholds: {
-        branches: 80,
+        branches: 100,
         functions: 85,
         lines: 85,
         statements: 85,

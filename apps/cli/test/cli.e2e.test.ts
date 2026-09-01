@@ -1,7 +1,10 @@
-import { lstat, rm, symlink } from "node:fs/promises";
+import { execFileSync } from "node:child_process";
+import { chmod, lstat, mkdir, mkdtemp, rm, symlink, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { SqliteCanonicalRepository } from "@contextweft/storage";
 import { describe, expect, it } from "vitest";
-import { runCli } from "../src/index.js";
+import { inspectContextWeft, runCli } from "../src/index.js";
 import { capturedIo, createGitRepository } from "./fixtures.js";
 
 describe("ContextWeft CLI end-to-end", () => {
@@ -65,6 +68,33 @@ describe("ContextWeft CLI end-to-end", () => {
       };
       expect(memory.indexed).toBe(true);
 
+      const correctIo = capturedIo();
+      expect(
+        await runCli(
+          [
+            "correct",
+            "--work-item",
+            workItem.id,
+            "--target-event",
+            memory.event.eventId,
+            "--content",
+            "Canonical events remain the source of truth.",
+            "--reason",
+            "Shorter wording",
+            "--idempotency-key",
+            "memory-correction-e2e",
+            "--json",
+          ],
+          { cwd: root, io: correctIo },
+        ),
+      ).toBe(0);
+      expect(JSON.parse(correctIo.stdoutLines[0] ?? "null").event.eventType).toBe(
+        "memory.corrected",
+      );
+      const correction = JSON.parse(correctIo.stdoutLines[0] ?? "null") as {
+        event: { eventId: string };
+      };
+
       const searchIo = capturedIo();
       expect(
         await runCli(
@@ -75,7 +105,8 @@ describe("ContextWeft CLI end-to-end", () => {
       const search = JSON.parse(searchIo.stdoutLines[0] ?? "null") as {
         results: Array<{ id: string }>;
       };
-      expect(search.results.map((result) => result.id)).toContain(memory.event.eventId);
+      expect(search.results.map((result) => result.id)).toContain(correction.event.eventId);
+      expect(search.results.map((result) => result.id)).not.toContain(memory.event.eventId);
 
       const checkpointInput = JSON.stringify({
         summary: "Canonical memory and CLI are operational.",
@@ -131,7 +162,7 @@ describe("ContextWeft CLI end-to-end", () => {
 
       const rebuildIo = capturedIo();
       expect(await runCli(["memory", "rebuild", "--json"], { cwd: root, io: rebuildIo })).toBe(0);
-      expect(JSON.parse(rebuildIo.stdoutLines[0] ?? "null")).toEqual({ eventsProcessed: 1 });
+      expect(JSON.parse(rebuildIo.stdoutLines[0] ?? "null")).toEqual({ eventsProcessed: 2 });
 
       const doctorIo = capturedIo();
       expect(await runCli(["doctor", "--json"], { cwd: root, io: doctorIo })).toBe(0);
@@ -158,6 +189,88 @@ describe("ContextWeft CLI end-to-end", () => {
     }
   });
 
+  it("returns usage errors for invalid command shapes", async () => {
+    for (const argv of [
+      ["unknown"],
+      ["task", "delete"],
+      ["memory", "compact"],
+      ["mcp", "--unknown"],
+      ["setup", "unknown"],
+      ["remember", "--work-item", "work:test", "--content", "x", "--kind", "unknown"],
+    ]) {
+      const io = capturedIo();
+      expect(await runCli(argv, { io })).toBe(2);
+      expect(io.stderrLines[0]).toMatch(/^Error:/u);
+    }
+
+    const helpIo = capturedIo();
+    expect(await runCli(["help"], { io: helpIo })).toBe(0);
+    expect(helpIo.stdoutLines[0]).toContain("Usage:");
+  });
+
+  it("rejects malformed checkpoint input before mutating state", async () => {
+    const root = createGitRepository();
+    try {
+      const initIo = capturedIo();
+      expect(await runCli(["init"], { cwd: root, io: initIo })).toBe(0);
+      const taskIo = capturedIo();
+      expect(
+        await runCli(["task", "start", "--title", "Checkpoint", "--goal", "Validate input"], {
+          cwd: root,
+          io: taskIo,
+        }),
+      ).toBe(0);
+      const workItemId = taskIo.stdoutLines[0]?.match(/\((work:[^)]+)\)$/u)?.[1];
+      expect(workItemId).toBeDefined();
+
+      const invalidJson = `${root}/invalid.json`;
+      await writeFile(invalidJson, "{", "utf8");
+      const jsonIo = capturedIo();
+      expect(
+        await runCli(["checkpoint", "--work-item", workItemId ?? "", "--input", invalidJson], {
+          cwd: root,
+          io: jsonIo,
+        }),
+      ).toBe(2);
+      expect(jsonIo.stderrLines[0]).toContain("not valid JSON");
+
+      const invalidSchema = `${root}/invalid-schema.json`;
+      await writeFile(invalidSchema, JSON.stringify({ nextActions: [] }), "utf8");
+      const schemaIo = capturedIo();
+      expect(
+        await runCli(["checkpoint", "--work-item", workItemId ?? "", "--input", invalidSchema], {
+          cwd: root,
+          io: schemaIo,
+        }),
+      ).toBe(2);
+      expect(schemaIo.stderrLines[0]).toContain("Invalid checkpoint input");
+
+      const rootSchema = `${root}/invalid-root-schema.json`;
+      await writeFile(rootSchema, "null", "utf8");
+      const rootSchemaIo = capturedIo();
+      expect(
+        await runCli(["checkpoint", "--work-item", workItemId ?? "", "--input", rootSchema], {
+          cwd: root,
+          io: rootSchemaIo,
+        }),
+      ).toBe(2);
+      expect(rootSchemaIo.stderrLines[0]).toContain("$:");
+
+      const large = `${root}/large.json`;
+      await writeFile(large, "x".repeat(1_048_577), "utf8");
+      const largeIo = capturedIo();
+      expect(
+        await runCli(["checkpoint", "--work-item", workItemId ?? "", "--input", large], {
+          cwd: root,
+          io: largeIo,
+        }),
+      ).toBe(2);
+      expect(largeIo.stderrLines[0]).toContain("regular file no larger");
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
   it("rejects a symlinked state directory before opening a database", async () => {
     const root = createGitRepository();
     const outside = createGitRepository();
@@ -172,6 +285,102 @@ describe("ContextWeft CLI end-to-end", () => {
     } finally {
       await rm(root, { recursive: true, force: true });
       await rm(outside, { recursive: true, force: true });
+    }
+  });
+
+  it("reports doctor warnings and failures for unsafe local state", async () => {
+    const notGit = await mkdtemp(join(tmpdir(), "contextweft-not-git-"));
+    try {
+      expect((await inspectContextWeft(notGit)).ok).toBe(false);
+    } finally {
+      await rm(notGit, { recursive: true, force: true });
+    }
+
+    const root = createGitRepository();
+    try {
+      const initIo = capturedIo();
+      expect(await runCli(["init"], { cwd: root, io: initIo })).toBe(0);
+      await chmod(`${root}/.contextweft`, 0o755);
+      const warning = await inspectContextWeft(root);
+      expect(warning.checks).toContainEqual(
+        expect.objectContaining({ name: "state-directory", status: "warn" }),
+      );
+
+      await rm(`${root}/.contextweft/contextweft.db`, { force: true });
+      await symlink(`${root}/index.ts`, `${root}/.contextweft/contextweft.db`);
+      const failure = await inspectContextWeft(root);
+      expect(failure.checks).toContainEqual(
+        expect.objectContaining({ name: "canonical-store", status: "fail" }),
+      );
+    } finally {
+      await rm(root, { recursive: true, force: true });
+    }
+  });
+
+  it("reports doctor edge states without repairing them", async () => {
+    const unborn = await mkdtemp(join(tmpdir(), "contextweft-unborn-"));
+    execFileSync("git", ["init", "-q", "-b", "main"], { cwd: unborn });
+    try {
+      const report = await inspectContextWeft(unborn);
+      expect(report.checks).toContainEqual(
+        expect.objectContaining({
+          name: "git",
+          message: expect.stringContaining("without a commit"),
+        }),
+      );
+    } finally {
+      await rm(unborn, { recursive: true, force: true });
+    }
+
+    const stateFile = createGitRepository();
+    try {
+      await writeFile(join(stateFile, ".contextweft"), "not a directory", "utf8");
+      const report = await inspectContextWeft(stateFile);
+      expect(report.checks).toContainEqual(
+        expect.objectContaining({ name: "state-directory", status: "fail" }),
+      );
+    } finally {
+      await rm(stateFile, { recursive: true, force: true });
+    }
+
+    const missingWorkspace = createGitRepository();
+    try {
+      const initIo = capturedIo();
+      expect(await runCli(["init"], { cwd: missingWorkspace, io: initIo })).toBe(0);
+      await rm(join(missingWorkspace, ".contextweft", "contextweft.db"), { force: true });
+      const repository = new SqliteCanonicalRepository({
+        path: join(missingWorkspace, ".contextweft", "contextweft.db"),
+      });
+      repository.close();
+      const report = await inspectContextWeft(missingWorkspace);
+      expect(report.checks).toContainEqual(
+        expect.objectContaining({
+          name: "canonical-store",
+          message: expect.stringContaining("does not contain this workspace"),
+        }),
+      );
+    } finally {
+      await rm(missingWorkspace, { recursive: true, force: true });
+    }
+
+    const memoryDirectory = createGitRepository();
+    try {
+      const initIo = capturedIo();
+      expect(await runCli(["init"], { cwd: memoryDirectory, io: initIo })).toBe(0);
+      await rm(join(memoryDirectory, ".contextweft", "memory.db"), { force: true });
+      await rm(join(memoryDirectory, ".contextweft", "memory.db-wal"), { force: true });
+      await rm(join(memoryDirectory, ".contextweft", "memory.db-shm"), { force: true });
+      await rm(join(memoryDirectory, ".contextweft", "memory.db"), {
+        recursive: true,
+        force: true,
+      });
+      await mkdir(join(memoryDirectory, ".contextweft", "memory.db"));
+      const report = await inspectContextWeft(memoryDirectory);
+      expect(report.checks).toContainEqual(
+        expect.objectContaining({ name: "derived-memory", status: "fail" }),
+      );
+    } finally {
+      await rm(memoryDirectory, { recursive: true, force: true });
     }
   });
 });

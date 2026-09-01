@@ -4,6 +4,7 @@ import type {
   OpenContextRawMessageManager,
   OpenContextSearchHit,
   OpenContextStore,
+  OpenContextStoredMessage,
 } from "../src/index.js";
 
 const occurredAt = "2026-08-31T12:00:00.000Z";
@@ -97,7 +98,7 @@ export class FakeOpenContextManager implements OpenContextRawMessageManager {
     return changed;
   }
 
-  public async getMessageById(messageId: string) {
+  public async getMessageById(messageId: string): Promise<OpenContextStoredMessage | null> {
     return this.messages.get(messageId) ?? null;
   }
 
@@ -106,7 +107,7 @@ export class FakeOpenContextManager implements OpenContextRawMessageManager {
     readonly keywords: readonly string[];
     readonly limit: number;
     readonly botId: "contextweft";
-  }) {
+  }): Promise<readonly OpenContextSearchHit[]> {
     return [...this.messages.values()]
       .filter(
         (message) =>

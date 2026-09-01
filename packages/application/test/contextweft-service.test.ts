@@ -1,6 +1,11 @@
 import { describe, expect, it } from "vitest";
+import type { ContextEvent } from "@contextweft/contracts";
 import { SqliteCanonicalRepository } from "@contextweft/storage";
-import { ContextWeftService, UnsafeArtifactPathError } from "../src/index.js";
+import {
+  ContextWeftService,
+  InvalidCheckpointError,
+  UnsafeArtifactPathError,
+} from "../src/index.js";
 import { FakeGit, gitSnapshot, identity, time } from "./fixtures.js";
 
 function serviceFixture() {
@@ -32,6 +37,12 @@ async function initializedFixture() {
 }
 
 describe("ContextWeftService", () => {
+  it("can be constructed with default infrastructure adapters", () => {
+    const repository = new SqliteCanonicalRepository({ path: ":memory:" });
+    expect(new ContextWeftService({ repository })).toBeInstanceOf(ContextWeftService);
+    repository.close();
+  });
+
   it("creates an idempotent workspace and work item", async () => {
     const { repository, service } = serviceFixture();
     const input = {
@@ -52,6 +63,9 @@ describe("ContextWeftService", () => {
     };
     expect(service.startWorkItem(workInput)).toEqual(service.startWorkItem(workInput));
     expect(repository.countEvents(first.id)).toBe(2);
+    expect(() =>
+      service.startWorkItem({ ...workInput, workspaceId: "ws:missing", idempotencyKey: "missing" }),
+    ).toThrow();
     repository.close();
   });
 
@@ -159,7 +173,208 @@ describe("ContextWeftService", () => {
         relevantFiles: [".env.production"],
       }),
     ).rejects.toBeInstanceOf(UnsafeArtifactPathError);
+    await expect(
+      service.createCheckpoint({
+        ...base,
+        idempotencyKey: "unsafe-absolute",
+        relevantFiles: ["/tmp/contextweft-app/src/index.ts"],
+      }),
+    ).rejects.toBeInstanceOf(UnsafeArtifactPathError);
+    await expect(
+      service.createCheckpoint({
+        ...base,
+        idempotencyKey: "unsafe-root",
+        relevantFiles: ["."],
+      }),
+    ).rejects.toBeInstanceOf(UnsafeArtifactPathError);
     repository.close();
+  });
+
+  it("rejects incomplete checkpoints and invalid handoffs", async () => {
+    const { repository, service, workspace, workItem } = await initializedFixture();
+    repository.appendEvent(conflictEvent(workspace.id, workItem.id, "handoff:conflict"));
+
+    await expect(
+      service.createCheckpoint({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        idempotencyKey: "empty-checkpoint",
+        nextActions: [],
+        ...identity,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCheckpointError);
+    expect(() =>
+      service.createHandoff({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        checkpointEventId: "evt:missing",
+        idempotencyKey: "bad-handoff",
+        note: "Cannot hand off a missing checkpoint",
+        ...identity,
+      }),
+    ).toThrow(InvalidCheckpointError);
+    expect(() =>
+      service.createHandoff({
+        workspaceId: workspace.id,
+        workItemId: "work:missing",
+        checkpointEventId: "evt:missing",
+        idempotencyKey: "missing-work-item",
+        ...identity,
+      }),
+    ).toThrow();
+    expect(() =>
+      service.createHandoff({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        checkpointEventId: "evt:missing",
+        idempotencyKey: "conflict",
+        ...identity,
+      }),
+    ).toThrow(InvalidCheckpointError);
+
+    const checkpoint = await service.createCheckpoint({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      idempotencyKey: "handoff-note-checkpoint",
+      nextActions: ["Continue"],
+      ...identity,
+    });
+    const noteOnlyHandoff = service.createHandoff({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      checkpointEventId: checkpoint.checkpoint.eventId,
+      idempotencyKey: "handoff-note-only",
+      note: "No target agent yet",
+      ...identity,
+    });
+    expect(noteOnlyHandoff.payload).toEqual({
+      checkpointEventId: checkpoint.checkpoint.eventId,
+      note: "No target agent yet",
+    });
+    repository.close();
+  });
+
+  it("rejects checkpoint and memory idempotency keys owned by different event types", async () => {
+    const { repository, service, workspace, workItem } = await initializedFixture();
+    repository.appendEvents([
+      conflictEvent(workspace.id, workItem.id, "checkpoint-conflict:checkpoint"),
+      conflictEvent(workspace.id, workItem.id, "memory-record:conflict"),
+      conflictEvent(workspace.id, workItem.id, "memory-correct:conflict"),
+    ]);
+
+    await expect(
+      service.createCheckpoint({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        idempotencyKey: "checkpoint-conflict",
+        nextActions: ["Continue"],
+        ...identity,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCheckpointError);
+    await expect(
+      service.recordMemory({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        idempotencyKey: "conflict",
+        content: "Fact",
+        kind: "fact",
+        confidence: 1,
+        ...identity,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCheckpointError);
+    await expect(
+      service.correctMemory({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        idempotencyKey: "conflict",
+        targetEventId: "evt:missing",
+        content: "Correction",
+        reason: "Conflict",
+        ...identity,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCheckpointError);
+    repository.close();
+  });
+
+  it("captures checkpoint optional fields against an unborn clean repository", async () => {
+    const fixture = await initializedFixture();
+    const unbornCleanSnapshot = (({
+      revision: _revision,
+      branch: _branch,
+      ...snapshot
+    }: typeof gitSnapshot) => snapshot)(gitSnapshot);
+    fixture.git.snapshot = { ...unbornCleanSnapshot, dirty: false, changedFiles: [] };
+
+    const result = await fixture.service.createCheckpoint({
+      workspaceId: fixture.workspace.id,
+      workItemId: fixture.workItem.id,
+      idempotencyKey: "clean-checkpoint",
+      goal: "Updated goal",
+      summary: "No git commit exists yet.",
+      completed: ["Completed branch coverage planning"],
+      inProgress: ["Writing tests"],
+      pending: ["Publish alpha"],
+      decisions: [
+        { summary: "Keep tests focused", rationale: "Coverage should explain behavior" },
+        { summary: "No optional alternatives" },
+      ],
+      constraints: [{ summary: "Do not expose secrets", kind: "security" }],
+      failedAttempts: [{ summary: "Tried ignoring source branches", reason: "It weakened signal" }],
+      tests: [{ command: "pnpm test:coverage", status: "failed", summary: "Below 95%" }],
+      nextActions: ["Run coverage again"],
+      relevantFiles: ["src/index.ts", "./src/index.ts"],
+      ...identity,
+    });
+
+    expect(result.artifacts.map((artifact) => artifact.kind)).toEqual(["file"]);
+    expect(result.events.map((event) => event.eventType)).toEqual([
+      "goal.updated",
+      "progress.recorded",
+      "progress.recorded",
+      "progress.recorded",
+      "decision.recorded",
+      "decision.recorded",
+      "constraint.recorded",
+      "attempt.failed",
+      "test.observed",
+      "artifact.observed",
+      "checkpoint.created",
+    ]);
+    fixture.repository.close();
+  });
+
+  it("captures branchless commits and unborn dirty diffs", async () => {
+    const branchless = await initializedFixture();
+    const branchlessSnapshot = (({ branch: _branch, ...snapshot }: typeof gitSnapshot) => snapshot)(
+      gitSnapshot,
+    );
+    branchless.git.snapshot = { ...branchlessSnapshot, dirty: false, changedFiles: [] };
+    const branchlessCheckpoint = await branchless.service.createCheckpoint({
+      workspaceId: branchless.workspace.id,
+      workItemId: branchless.workItem.id,
+      idempotencyKey: "branchless-checkpoint",
+      nextActions: ["Continue"],
+      ...identity,
+    });
+    expect(branchlessCheckpoint.artifacts[0]?.metadata).toEqual({ branch: null });
+    branchless.repository.close();
+
+    const unbornDirty = await initializedFixture();
+    const unbornDirtySnapshot = (({ revision: _revision, ...snapshot }: typeof gitSnapshot) =>
+      snapshot)(gitSnapshot);
+    unbornDirty.git.snapshot = { ...unbornDirtySnapshot, dirty: true };
+    const dirtyCheckpoint = await unbornDirty.service.createCheckpoint({
+      workspaceId: unbornDirty.workspace.id,
+      workItemId: unbornDirty.workItem.id,
+      idempotencyKey: "unborn-dirty-checkpoint",
+      nextActions: ["Continue"],
+      relevantFiles: ["src/index.ts"],
+      ...identity,
+    });
+    expect(dirtyCheckpoint.artifacts.every((artifact) => artifact.gitRevision === undefined)).toBe(
+      true,
+    );
+    unbornDirty.repository.close();
   });
 
   it("degrades gracefully when memory and current Git are unavailable", async () => {
@@ -254,6 +469,7 @@ describe("ContextWeftService", () => {
       content: "Context packs are compiled deterministically.",
       kind: "decision",
       confidence: 1,
+      validFrom: "2026-08-31T13:00:00.000Z",
       ...identity,
     });
     expect(first.indexed).toBe(false);
@@ -297,9 +513,62 @@ describe("ContextWeftService", () => {
     expect(correctionReplay.replayed).toBe(true);
     expect(correctionReplay.event).toEqual(correction.event);
 
+    await expect(
+      service.correctMemory({
+        workspaceId: workspace.id,
+        workItemId: workItem.id,
+        idempotencyKey: "bad-memory-correction",
+        targetEventId: "evt:missing",
+        content: "Cannot correct a missing fact.",
+        reason: "Missing target.",
+        ...identity,
+      }),
+    ).rejects.toBeInstanceOf(InvalidCheckpointError);
+
+    const stringThrowingService = new ContextWeftService({
+      repository,
+      git: new FakeGit(),
+      memory: {
+        async search() {
+          throw "offline";
+        },
+        async ingest() {},
+        async rebuild() {},
+      },
+      clock: { now: () => new Date(time) },
+    });
+    const search = await stringThrowingService.searchMemory({
+      workspaceId: workspace.id,
+      workItemId: workItem.id,
+      query: "deterministic",
+    });
+    expect(search.warnings[0]).toContain("offline");
+
     const rebuilt = await service.rebuildMemory(workspace.id);
     expect(rebuilt.eventsProcessed).toBe(2);
     expect(indexed).toContain(first.event.eventId);
     repository.close();
   });
 });
+
+function conflictEvent(
+  workspaceId: string,
+  workItemId: string,
+  idempotencyKey: string,
+): ContextEvent {
+  return {
+    schemaVersion: "0.1",
+    eventId: `evt:${idempotencyKey.replaceAll(":", "-")}`,
+    eventType: "decision.recorded",
+    workspaceId,
+    workItemId,
+    occurredAt: time,
+    observedAt: time,
+    actor: identity.actor,
+    source: identity.source,
+    idempotencyKey,
+    payload: { summary: `Conflict for ${idempotencyKey}`, alternatives: [] },
+    provenance: { observedAt: time, sourceEventIds: [], artifactIds: [] },
+    metadata: {},
+  };
+}

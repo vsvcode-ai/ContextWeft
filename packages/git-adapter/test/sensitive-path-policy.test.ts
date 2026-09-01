@@ -15,12 +15,17 @@ describe("DefaultSensitivePathPolicy", () => {
     expect(policy.isSensitive(path)).toBe(true);
   });
 
-  it.each(["src/index.ts", "docs/environment.md", "packages/keyboard/index.ts"])(
+  it.each(["", "src/index.ts", "docs/environment.md", "packages/keyboard/index.ts"])(
     "allows %s",
     (path) => {
       expect(policy.isSensitive(path)).toBe(false);
     },
   );
+
+  it("normalizes case and platform separators before classification", () => {
+    expect(policy.isSensitive("Config\\Secrets\\TOKEN.txt")).toBe(true);
+    expect(policy.isSensitive("keys/CLIENT.P12")).toBe(true);
+  });
 });
 
 describe("parseNullDelimitedPaths", () => {

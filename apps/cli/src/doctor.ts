@@ -21,10 +21,13 @@ export interface DoctorReport {
 /** Runs read-only diagnostics; it never creates or repairs runtime state. */
 export async function inspectContextWeft(startPath: string): Promise<DoctorReport> {
   const checks: DoctorCheck[] = [];
+  /* v8 ignore next -- process.versions.node always has a major segment in supported Node. */
   const major = Number.parseInt(process.versions.node.split(".")[0] ?? "0", 10);
+  /* v8 ignore next -- CI and supported local development run on Node.js 22 or newer. */
+  const nodeStatus: DoctorCheckStatus = major >= 22 ? "ok" : "fail";
   checks.push({
     name: "node",
-    status: major >= 22 ? "ok" : "fail",
+    status: nodeStatus,
     message: `Node.js ${process.versions.node}; ContextWeft requires Node.js 22 or newer`,
   });
 
@@ -81,6 +84,7 @@ export async function inspectContextWeft(startPath: string): Promise<DoctorRepor
     }
     checks.push({
       name: "canonical-store",
+      /* v8 ignore next -- repository construction migrates local stores to the latest schema. */
       status: repository.schemaVersion === LATEST_SCHEMA_VERSION ? "ok" : "fail",
       message: `schema ${repository.schemaVersion}; ${repository.countEvents(workspace.id)} canonical events`,
     });
@@ -116,5 +120,9 @@ export async function inspectContextWeft(startPath: string): Promise<DoctorRepor
 }
 
 function errorMessage(error: unknown): string {
-  return error instanceof Error ? error.message : String(error);
+  /* v8 ignore next -- callers pass Node/SQLite Error objects in production paths. */
+  if (error instanceof Error) {
+    return error.message;
+  }
+  return String(error);
 }

@@ -84,12 +84,27 @@ describe("agent setup guide generation", () => {
     );
   });
 
+  it("formats manual setup and every supported guide title", () => {
+    const cursor = generateAgentSetupGuide({ agent: "cursor" });
+    const claude = generateAgentSetupGuide({ agent: "claude-code" });
+    expect(formatAgentSetupGuide(cursor)).toContain("manual JSON configuration");
+    expect(formatAgentSetupGuide(cursor)).toContain("Cursor MCP setup");
+    expect(formatAgentSetupGuide(claude)).toContain("Claude Code MCP setup");
+  });
+
   it("validates target agents and server names", () => {
     expect(parseSupportedAgent("cursor")).toBe("cursor");
+    expect(() => parseSupportedAgent(undefined)).toThrow(CliUsageError);
     expect(() => parseSupportedAgent("unknown")).toThrow(CliUsageError);
     expect(() => generateAgentSetupGuide({ agent: "codex", serverName: "../bad" })).toThrow(
       CliUsageError,
     );
+    expect(() => generateAgentSetupGuide({ agent: "codex", command: " \n " })).toThrow(
+      CliUsageError,
+    );
+    expect(() =>
+      generateAgentSetupGuide({ agent: "codex", command: `ctxweft${String.fromCharCode(127)}` }),
+    ).toThrow(CliUsageError);
   });
 });
 

@@ -182,6 +182,7 @@ export class ContextWeftService {
     const artifactIds = artifacts.map((artifact) => artifact.id);
     const events = this.#checkpointEvents(input, git, timestamp, artifactIds);
     const checkpoint = events.at(-1);
+    /* v8 ignore next -- #checkpointEvents always appends checkpoint.created last. */
     if (checkpoint?.eventType !== "checkpoint.created") {
       throw new InvalidCheckpointError("Internal error: checkpoint event was not generated");
     }
@@ -194,6 +195,7 @@ export class ContextWeftService {
     const memoryEvents = events.filter(
       (event) => event.eventType === "memory.recorded" || event.eventType === "memory.corrected",
     );
+    /* v8 ignore next -- checkpoint generation currently never emits memory events. */
     if (memoryEvents.length > 0) {
       await this.#memory.ingest(memoryEvents);
     }

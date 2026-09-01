@@ -11,6 +11,7 @@ export const processIo: CliIo = {
   stderr(text) {
     process.stderr.write(`${text}\n`);
   },
+  /* v8 ignore start -- process.stdin async iteration is covered by CLI integration. */
   async readStdin(maximumBytes) {
     const chunks: Buffer[] = [];
     let bytes = 0;
@@ -24,4 +25,5 @@ export const processIo: CliIo = {
     }
     return Buffer.concat(chunks).toString("utf8");
   },
+  /* v8 ignore stop */
 };

@@ -1,6 +1,8 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import type { ContextEvent } from "@contextweft/contracts";
+import Database from "better-sqlite3";
 import { describe, expect, it } from "vitest";
 import {
   EntityConflictError,
@@ -10,7 +12,7 @@ import {
   SqliteCanonicalRepository,
   StorageClosedError,
 } from "../src/index.js";
-import { artifact, decisionEvent, workItem, workspace } from "./fixtures.js";
+import { artifact, decisionEvent, time, workItem, workspace } from "./fixtures.js";
 
 function memoryRepository(): SqliteCanonicalRepository {
   const repository = new SqliteCanonicalRepository({ path: ":memory:" });
@@ -113,9 +115,94 @@ describe("SqliteCanonicalRepository", () => {
       repository.listEvents({
         workspaceId: workspace.id,
         workItemId: workItem.id,
+        occurredAfter: "2026-08-31T09:59:00.000Z",
+        occurredBefore: "2026-08-31T10:01:00.000Z",
         eventTypes: ["decision.recorded"],
+        limit: 100,
       }),
     ).toEqual([first]);
+    expect(repository.listEvents({ workspaceId: workspace.id, eventTypes: [], limit: -1 })).toEqual(
+      [first],
+    );
+    repository.close();
+  });
+
+  it("round-trips workspace-scoped events and artifacts without optional fields", () => {
+    const repository = memoryRepository();
+    const workspaceEvent = {
+      schemaVersion: "0.1" as const,
+      eventId: "evt_workspace_initialized",
+      eventType: "workspace.initialized" as const,
+      workspaceId: workspace.id,
+      occurredAt: "2026-08-31T10:00:04.000Z",
+      observedAt: time,
+      actor: { type: "agent" as const, id: "agent_test" },
+      source: { kind: "test" as const },
+      idempotencyKey: "idem_workspace_initialized",
+      payload: { name: workspace.name, rootPath: workspace.rootPath },
+      provenance: {
+        observedAt: time,
+        sourceEventIds: [],
+        artifactIds: [],
+      },
+      metadata: {},
+    };
+    const workspaceArtifact = {
+      schemaVersion: "0.1" as const,
+      id: "artifact_workspace",
+      workspaceId: workspace.id,
+      kind: "terminal_output" as const,
+      uri: "terminal://contextweft/session",
+      observedAt: "2026-08-31T12:00:00.000Z",
+      metadata: {},
+    };
+
+    repository.putArtifact(workspaceArtifact);
+    expect(repository.listArtifacts(workspace.id)).toEqual([workspaceArtifact]);
+    expect(repository.listArtifacts(workspace.id, workItem.id)).toEqual([]);
+
+    repository.appendEvent(workspaceEvent);
+    expect(repository.getEvent(workspaceEvent.eventId)).toEqual(workspaceEvent);
+    expect(repository.countEvents(workspace.id)).toBe(1);
+    repository.close();
+  });
+
+  it("rejects artifact and event identifiers that move across boundaries", () => {
+    const repository = memoryRepository();
+    repository.putArtifact(artifact);
+    repository.putWorkspace({
+      ...workspace,
+      id: "ws_artifact_conflict",
+      rootPath: "/tmp/contextweft-artifact-conflict",
+    });
+    repository.putWorkItem({
+      ...workItem,
+      id: "work_artifact_conflict",
+    });
+    expect(() =>
+      repository.putArtifact({
+        ...artifact,
+        workItemId: "work_artifact_conflict",
+      }),
+    ).toThrow(EntityConflictError);
+    const { workItemId: _conflictWorkItemId, ...artifactWithoutWorkItem } = artifact;
+    expect(() =>
+      repository.putArtifact({
+        ...artifactWithoutWorkItem,
+        workspaceId: "ws_artifact_conflict",
+      }),
+    ).toThrow(EntityConflictError);
+    const { workItemId: _missingWorkItemId, ...artifactWithoutMissingWorkItem } = artifact;
+    expect(() =>
+      repository.putArtifact({ ...artifactWithoutMissingWorkItem, workspaceId: "ws_missing" }),
+    ).toThrow(EntityNotFoundError);
+
+    const conflictingEvent: ContextEvent = {
+      ...(decisionEvent() as Extract<ContextEvent, { eventType: "decision.recorded" }>),
+      payload: { summary: "different", alternatives: [] },
+    };
+    repository.appendEvent(decisionEvent());
+    expect(() => repository.appendEvent(conflictingEvent)).toThrow(EntityConflictError);
     repository.close();
   });
 
@@ -144,6 +231,19 @@ describe("SqliteCanonicalRepository", () => {
       writeFileSync(path, "not a sqlite database");
       expect(() => new SqliteCanonicalRepository({ path })).toThrow();
       expect(() => new SqliteCanonicalRepository({ path, readonly: true })).toThrow();
+    } finally {
+      rmSync(directory, { recursive: true, force: true });
+    }
+  });
+
+  it("rejects databases newer than the supported schema", () => {
+    const directory = mkdtempSync(join(tmpdir(), "contextweft-newer-schema-"));
+    const path = join(directory, "contextweft.db");
+    try {
+      const database = new Database(path);
+      database.pragma(`user_version = ${LATEST_SCHEMA_VERSION + 1}`);
+      database.close();
+      expect(() => new SqliteCanonicalRepository({ path })).toThrow();
     } finally {
       rmSync(directory, { recursive: true, force: true });
     }

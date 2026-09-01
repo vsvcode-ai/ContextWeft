@@ -236,6 +236,7 @@ function canonicalMemoryEvents(events: readonly ContextEvent[]): ContextEvent[] 
 }
 
 function toRawMessage(event: ContextEvent): OpenContextRawMessageInput {
+  /* v8 ignore next -- canonicalMemoryEvents filters inputs before this mapper is called. */
   if (event.eventType !== "memory.recorded" && event.eventType !== "memory.corrected") {
     throw new OpenContextRuntimeStateError(`Event ${event.eventId} is not a memory event`);
   }

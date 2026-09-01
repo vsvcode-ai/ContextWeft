@@ -227,6 +227,7 @@ function success(data: unknown, text = canonicalJson(data)): CallToolResult {
 
 function toJsonObject(value: unknown): Record<string, JsonValue> {
   const parsed: unknown = JSON.parse(canonicalJson(value));
+  /* v8 ignore next -- internal callers wrap every structured payload in an object envelope. */
   if (typeof parsed !== "object" || parsed === null || Array.isArray(parsed)) {
     return { value: parsed as JsonValue };
   }

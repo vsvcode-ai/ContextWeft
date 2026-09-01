@@ -14,4 +14,9 @@ describe("HeuristicTokenEstimator", () => {
     expect(estimator.estimate(truncated)).toBeLessThanOrEqual(6);
     expect(truncated.endsWith("…")).toBe(true);
   });
+
+  it("returns empty or original text when no binary search is needed", () => {
+    expect(estimator.truncate("anything", 0)).toBe("");
+    expect(estimator.truncate("short", 10)).toBe("short");
+  });
 });

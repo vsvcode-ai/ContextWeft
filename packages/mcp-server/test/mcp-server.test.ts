@@ -1,6 +1,6 @@
 import { Client, InMemoryTransport } from "@modelcontextprotocol/client";
 import { afterEach, describe, expect, it } from "vitest";
-import { createContextWeftMcpServer } from "../src/index.js";
+import { createContextWeftMcpServer, mapToolError, toCreateCheckpointInput } from "../src/index.js";
 import { operationsFixture } from "./fixtures.js";
 
 const closeCallbacks: Array<() => Promise<void>> = [];
@@ -60,6 +60,78 @@ describe("ContextWeft MCP server", () => {
     );
   });
 
+  it("passes optional tool inputs through the MCP boundary", async () => {
+    const calls: string[] = [];
+    const base = operationsFixture();
+    const client = await connectedClient({
+      ...base,
+      async bootstrap(input) {
+        calls.push(`bootstrap:${input.memoryLimit}`);
+        return base.bootstrap(input);
+      },
+      async recordMemory(input) {
+        calls.push(`remember:${input.validFrom}`);
+        return base.recordMemory(input);
+      },
+    });
+
+    await client.callTool({
+      name: "contextweft.bootstrap",
+      arguments: {
+        workspaceId: "ws:mcp-test",
+        workItemId: "work:mcp-test",
+        intent: "Continue",
+        tokenBudget: 1_000,
+        memoryLimit: 3,
+      },
+    });
+    await client.callTool({
+      name: "contextweft.remember",
+      arguments: {
+        workspaceId: "ws:mcp-test",
+        workItemId: "work:mcp-test",
+        idempotencyKey: "remember-valid-from",
+        content: "Fact",
+        kind: "fact",
+        confidence: 1,
+        validFrom: "2026-08-31T12:00:00.000Z",
+      },
+    });
+    await client.callTool({
+      name: "contextweft.remember",
+      arguments: {
+        workspaceId: "ws:mcp-test",
+        workItemId: "work:mcp-test",
+        idempotencyKey: "remember-no-valid-from",
+        content: "Fact",
+        kind: "fact",
+        confidence: 1,
+      },
+    });
+
+    expect(calls).toEqual([
+      "bootstrap:3",
+      "remember:2026-08-31T12:00:00.000Z",
+      "remember:undefined",
+    ]);
+  });
+
+  it("wraps primitive operation results as structured JSON values", async () => {
+    const base = operationsFixture();
+    const client = await connectedClient({
+      ...base,
+      workspaceStatus() {
+        return "primitive" as never;
+      },
+    });
+    const result = await client.callTool({
+      name: "contextweft.workspace_status",
+      arguments: { workspaceId: "ws:mcp-test" },
+    });
+
+    expect(result.structuredContent).toEqual({ ok: true, data: "primitive" });
+  });
+
   it("sanitizes unexpected failures instead of leaking internal details", async () => {
     const base = operationsFixture();
     const client = await connectedClient({
@@ -103,5 +175,121 @@ describe("ContextWeft MCP server", () => {
 
     expect(result.isError).toBe(true);
     expect(calls).toBe(0);
+  });
+
+  it("maps every checkpoint payload optional field exactly once", () => {
+    const mapped = toCreateCheckpointInput(
+      {
+        summary: "Ready to hand off",
+        goal: "Finish branch coverage",
+        completed: ["Added unit tests"],
+        inProgress: ["Testing coverage"],
+        pending: ["Release alpha"],
+        decisions: [
+          {
+            summary: "Use canonical events",
+            rationale: "Auditability",
+            alternatives: ["Opaque vector memory"],
+          },
+          { summary: "Keep MCP stable" },
+        ],
+        constraints: [{ summary: "No secrets", kind: "security" }],
+        failedAttempts: [
+          { summary: "Tried broad excludes", reason: "Too weak", nextAvoid: "Lowering signal" },
+          { summary: "Skipped e2e", reason: "Lost CLI confidence" },
+        ],
+        tests: [
+          {
+            command: "pnpm test",
+            status: "passed",
+            durationMs: 123,
+            summary: "All unit tests passed",
+          },
+          { command: "pnpm lint", status: "passed" },
+        ],
+        nextActions: ["Run coverage"],
+        relevantFiles: ["packages/mcp-server/src/mapping.ts"],
+      },
+      {
+        workspaceId: "ws:mcp-test",
+        workItemId: "work:mcp-test",
+        idempotencyKey: "checkpoint-map",
+        actor: { type: "agent", id: "test" },
+        source: { kind: "test" },
+      },
+    );
+
+    expect(mapped).toEqual(
+      expect.objectContaining({
+        summary: "Ready to hand off",
+        goal: "Finish branch coverage",
+        completed: ["Added unit tests"],
+        inProgress: ["Testing coverage"],
+        pending: ["Release alpha"],
+        relevantFiles: ["packages/mcp-server/src/mapping.ts"],
+      }),
+    );
+    expect(mapped.decisions).toEqual([
+      {
+        summary: "Use canonical events",
+        rationale: "Auditability",
+        alternatives: ["Opaque vector memory"],
+      },
+      { summary: "Keep MCP stable" },
+    ]);
+    expect(mapped.failedAttempts).toEqual([
+      { summary: "Tried broad excludes", reason: "Too weak", nextAvoid: "Lowering signal" },
+      { summary: "Skipped e2e", reason: "Lost CLI confidence" },
+    ]);
+    expect(mapped.tests).toEqual([
+      {
+        command: "pnpm test",
+        status: "passed",
+        durationMs: 123,
+        summary: "All unit tests passed",
+      },
+      { command: "pnpm lint", status: "passed" },
+    ]);
+  });
+
+  it("omits absent checkpoint optional fields from application input", () => {
+    const mapped = toCreateCheckpointInput(
+      { nextActions: ["Continue"] },
+      {
+        workspaceId: "ws:mcp-test",
+        workItemId: "work:mcp-test",
+        idempotencyKey: "checkpoint-minimal",
+        actor: { type: "agent", id: "test" },
+        source: { kind: "test" },
+      },
+    );
+
+    expect(Object.hasOwn(mapped, "completed")).toBe(false);
+    expect(Object.hasOwn(mapped, "relevantFiles")).toBe(false);
+    expect(mapped.nextActions).toEqual(["Continue"]);
+  });
+
+  it("maps known operation errors to stable sanitized envelopes", () => {
+    for (const [name, code] of [
+      ["EntityNotFoundError", "NOT_FOUND"],
+      ["UnsafeArtifactPathError", "UNSAFE_PATH"],
+      ["InvalidCheckpointError", "INVALID_INPUT"],
+      ["ContractValidationError", "INVALID_INPUT"],
+    ] as const) {
+      const error = new Error(`${name} details`);
+      error.name = name;
+      expect(mapToolError(error)).toEqual({
+        code,
+        message: `${name} details`,
+        retryable: false,
+      });
+    }
+
+    expect(mapToolError("not an error")).toEqual({
+      code: "INTERNAL_ERROR",
+      message:
+        "ContextWeft could not complete the operation. Inspect stderr or run ctxweft doctor.",
+      retryable: true,
+    });
   });
 });

@@ -29,5 +29,9 @@ export function mapToolError(error: unknown): ContextWeftToolError {
 }
 
 function safeMessage(error: unknown): string {
-  return error instanceof Error ? error.message.slice(0, 2_048) : "Invalid operation";
+  /* v8 ignore next -- mapToolError calls safeMessage only after matching Error.name. */
+  if (error instanceof Error) {
+    return error.message.slice(0, 2_048);
+  }
+  return "Invalid operation";
 }
