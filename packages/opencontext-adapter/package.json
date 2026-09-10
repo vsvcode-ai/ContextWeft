@@ -27,6 +27,6 @@
     "@contextweft/application": "workspace:*",
     "@contextweft/context-compiler": "workspace:*",
     "@contextweft/contracts": "workspace:*",
-    "@melandlabs/memory-store": "1.2.4"
+    "@melandlabs/memory-store": "1.2.5"
   }
 }

@@ -137,8 +137,8 @@ importers:
         specifier: workspace:*
         version: link:../contracts
       '@melandlabs/memory-store':
-        specifier: 1.2.4
-        version: 1.2.4(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
+        specifier: 1.2.5
+        version: 1.2.5(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
 
   packages/storage:
     dependencies:
@@ -168,8 +168,8 @@ packages:
     peerDependencies:
       zod: ^3.25.49
 
-  '@ai-sdk/openai-compatible@1.0.52':
-    resolution: {integrity: sha512-QOX9Jo1VKGAJqxycB7IGheR+08Vt0xbtzQBZiwjTyQdSYw5aCfP5EYbvCNahcfQ9pz4Oxm3IHoIOoCR0tWcaMA==}
+  '@ai-sdk/openai-compatible@1.0.53':
+    resolution: {integrity: sha512-KKtoWZmer+aKsGpkUeSypjZyo9CT+WXZTiOhpqkUrfqG9P6lS92yadYRe6tPpMtnWjLwynj03uMxCT9uIjumKA==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -180,8 +180,8 @@ packages:
     peerDependencies:
       zod: ^3.25.49
 
-  '@ai-sdk/provider-utils@3.0.35':
-    resolution: {integrity: sha512-/5z8tRGuYXwFy0ID+WtiWiECJzH5x/rI/g/3H8x3GQvE4i4etnZfKWAiU23VZEymInh+4l7uMNQJyaNN/54QFw==}
+  '@ai-sdk/provider-utils@3.0.36':
+    resolution: {integrity: sha512-2eSw90hn32Je6n2a8Gf4dJ2EoecPJuOCWqwZCw+BkhPq2LOS01HX3s6ljgOm0iIkZiD5aAuMdpOw17rYKQF/Zg==}
     engines: {node: '>=18'}
     peerDependencies:
       zod: ^3.25.76 || ^4.1.8
@@ -204,52 +204,52 @@ packages:
     resolution: {integrity: sha512-Aca/KiGeRtMM7rOJ38Qio+Dc2V45PpiGoWgdrdtIkgM9zkhYpS043t0ggKoNOWgm/csv99XWGrfSF63PSkVeHw==}
     engines: {node: '>=22'}
 
-  '@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.251':
-    resolution: {integrity: sha512-C23h+Dbddcc4gai95+lhm4/94am2IOq+bf3IdEDDS7EPqDQqajo2s5q1/ZSwq9rOc0RJLT7Ws72ZCzYJh67KSg==}
+  '@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.263':
+    resolution: {integrity: sha512-H4eLd4Tkx3rJkt739CHb+9AcaKiiOpibU4tYsmma47mV+2zAPjUyFxpuE2N57VSmpAgbLQxu44du0TFN+UH5dg==}
     cpu: [arm64]
     os: [darwin]
 
-  '@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.251':
-    resolution: {integrity: sha512-HrLnb3ggk+vMbymUvbosgPmxWp4W6Ot+0mNVjoBYDn5OZrTV3C3LRtbWf7jwcGyKMcg0xJf0AqiudQ2BRrlr8A==}
+  '@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.263':
+    resolution: {integrity: sha512-jKwmfkem1s/TcK7u83cJf2zLHMz846irV4vqYGUlo74uX2qfX57R4UsrCMlcTUMou/U9vQyNCc/Kk0s+zSxYRg==}
     cpu: [x64]
     os: [darwin]
 
-  '@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.251':
-    resolution: {integrity: sha512-RTUf7TPBUkQ6oV3pDkEdcD47I0uH0ZpvmZlXHnrLGznFqyLr+7XHupOxUMJD0Jwm9v5qeqpNiPAYB0dL4RYiHg==}
+  '@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.263':
+    resolution: {integrity: sha512-TiOmi9mqYvu3uGgM+0eQrUQzgXb7pgTzqahtRyEjpJrNigddGoANHcbNKL7P7y4etJpyIuYXGuVh5SLJzySYVA==}
     cpu: [arm64]
     os: [linux]
     libc: [musl]
 
-  '@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.251':
-    resolution: {integrity: sha512-3E27F5j82EWOyEniRW7crmo0jWYYQmPDdP52jWq6Y6aytiyYIdUFMEGZZ6chVHNlZiU7GsjTa3teKk2xlQ68lQ==}
+  '@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.263':
+    resolution: {integrity: sha512-2KPY1wu1hdjpVsw+Tg3i50uhxhhetO1fB24wjUJAQJ8YPSogqO32UbtYPJ6I3F17lBNHb/Mq3nRYGAuSU5yjtg==}
     cpu: [arm64]
     os: [linux]
     libc: [glibc]
 
-  '@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.251':
-    resolution: {integrity: sha512-SzXrdy7jjrjJIuTG+VMRAY0YZ3G/8w21WuhAozwnvnEUAPo6NDv6lgFinu7NO8J6CPE+MK2sGze6JeCF+ljgUg==}
+  '@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.263':
+    resolution: {integrity: sha512-PWctt/XjebBxtI37i2xx2OMxSscPMnKmxU82MWdtIvoAyJ40U5yfqpm92fm45R02eLn9j4LQpvNocVTcRAHv+g==}
     cpu: [x64]
     os: [linux]
     libc: [musl]
 
-  '@anthropic-ai/claude-agent-sdk-linux-x64@0.3.251':
-    resolution: {integrity: sha512-qCD87XPjcNM1u4ukqmcgpHDl3Y6l+cW8j7kPzH91Y5yLBYJ5xYZA2KtJ7AYNEPOteVyOGJw/efmva0S8CRr0fg==}
+  '@anthropic-ai/claude-agent-sdk-linux-x64@0.3.263':
+    resolution: {integrity: sha512-un7HJzTT+DSQLgM33emQ0qHAwIY3CXIwe8JXoD9PaT7pdLepK4Ffa4r5j84pHTVS5uoGqxcf196tBgqb5/Z7FA==}
     cpu: [x64]
     os: [linux]
     libc: [glibc]
 
-  '@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.251':
-    resolution: {integrity: sha512-FH1ZLcyc97ie3h7CSlIxA1ppXILgf0V8sFQrWnHyKBrthJXQkMHXhsTq9OZV/2KhXslNf2hTe0gHpZ1nCL1Gmg==}
+  '@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.263':
+    resolution: {integrity: sha512-n8owOwNSSi7/KpONb/ut+uXRjBIp9N6EjwADiB+YygPwGRtpWP+PR/qFsGdTVBE5cpPwhgKVAf27xEZEfNvcSQ==}
     cpu: [arm64]
     os: [win32]
 
-  '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.251':
-    resolution: {integrity: sha512-/jmtFIvfF0UFMxSZ8WV2Aus8aGA3+8Ft6AHvWuBJkY5jM2ubfqi6GnBjKCAL831TTllp2rKZlViANtWWRBvpvg==}
+  '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.263':
+    resolution: {integrity: sha512-EwqzsOLxIJTX6RIXtQ21ekOKmYBNfwbtGtqaPqdWZGzpMbHaie8kGsM630h9RFaoxeytS/jbg8B3fPCdUKfhPw==}
     cpu: [x64]
     os: [win32]
 
-  '@anthropic-ai/claude-agent-sdk@0.3.251':
-    resolution: {integrity: sha512-DqSi8mH2tQYRlVV0G+lJnQ/WbjJZ/a+8cJ3vPuYoqh8esIIvXHm1ZOXV1UPGsFYRnbBytEoiSGitguEXd+sQ+Q==}
+  '@anthropic-ai/claude-agent-sdk@0.3.263':
+    resolution: {integrity: sha512-0QWoHgWWlSmgXfEqZRbVYRoXT9p4tx/yKaZ4eLJ8l1MR65SIvMGR+cd5ZXUpGYZpj9RzbYiYU9LoFg90mdIjmw==}
     engines: {node: '>=18.0.0'}
     peerDependencies:
       '@anthropic-ai/sdk': '>=0.93.0'
@@ -668,8 +668,8 @@ packages:
   '@jridgewell/trace-mapping@0.3.31':
     resolution: {integrity: sha512-zzNR+SdQSDJzc8joaeP8QQoCQr8NuYx2dIIytl1QeBEZHJ9uW6hebsrYgbz8hJwUQao3TWCMtmfV8Nu1twOLAw==}
 
-  '@langchain/classic@1.0.45':
-    resolution: {integrity: sha512-VIC+lJRFejU2el7q4/aibTIk1ccPX0HZGSKhmrkHexZWXpwsjdBBTZYBzUxsgJ3srXAvD3ltLe8ZpbY/isB7rg==}
+  '@langchain/classic@1.0.46':
+    resolution: {integrity: sha512-WAnyAAjTDko+tkNc7y7PISEcM19XQDmfStE8ChWctGAMYE1RD6i/Bgo6CvAMuxeeIVqIKqt3C0Cq/qpPB6kxMw==}
     engines: {node: '>=20'}
     peerDependencies:
       '@langchain/core': ^1.2.9
@@ -1060,8 +1060,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.1.48
 
-  '@langchain/langgraph-sdk@1.10.0':
-    resolution: {integrity: sha512-cPPkh+hMNgeOaGtJRrqs1AjZde45cG2+Ma9Sc10wz2RyvT8SKToCKS+VvkS18SsLajnmq6/FKVmthq6rnUVYOw==}
+  '@langchain/langgraph-sdk@1.10.2':
+    resolution: {integrity: sha512-86qsfdBZWu1ZgywLN8AThU/jXi9rjPDZPWcTJp4SA1A/L62ypTNoSXbvtiwZt1odokXccYTxK1XWS8tmVdvEmw==}
     peerDependencies:
       '@langchain/core': ^1.1.48
       react: ^18 || ^19
@@ -1072,21 +1072,18 @@ packages:
       react-dom:
         optional: true
 
-  '@langchain/langgraph@1.4.13':
-    resolution: {integrity: sha512-LO1ak6jNQ9jR13tm7Ay4Yh2/otrH7LNVUwWTAI7WJigVdW5Fb6LuYSZUzVn4S7sVSiyVFfnrUcDTd8c7eAzPrQ==}
+  '@langchain/langgraph@1.4.14':
+    resolution: {integrity: sha512-uWAdRYTllfKCnTrlyovExPJCHJwcf3Wl2LzUlnaqsT7Rmoo3aCeYtq/7MV/Pw4q11motG8pR8bjr6T6V8Pe1gQ==}
     engines: {node: '>=18'}
     peerDependencies:
       '@langchain/core': ^1.1.48
       zod: ^3.25.32 || ^4.2.0
 
-  '@langchain/openai@1.5.10':
-    resolution: {integrity: sha512-4cxdgolkkXwnAiGEkNrue+ba7jUKjfBwleLCX5DrRVcRGrCc4w5EceblYZOIaHMY6+nhwMqIOtSzBWgcBCLfmw==}
+  '@langchain/openai@1.5.11':
+    resolution: {integrity: sha512-BvGp5lQk5//0WVwTIepscazFpneT9I9+mc+kp+cLuhGHFb7mc9zGNrusZOXoa3p73SN0i3XqTo8lyIndpVx3Hw==}
     engines: {node: '>=22'}
     peerDependencies:
       '@langchain/core': ^1.2.9
-
-  '@langchain/protocol@0.0.18':
-    resolution: {integrity: sha512-XW1egQtPfsGI41w2AMZNFZrUIwFSQHTjVMZs0OaTpCAvht/QLoaPN8FQcsysMVypOhupG28J29yOorrc70otBQ==}
 
   '@langchain/protocol@0.0.19':
     resolution: {integrity: sha512-9hKcRrH7cBX6gfutdfXPoft1OCchHe4FEpALoDJMl5Qu+n/YG5ynZmyu8+8cxORlPwHBoKTxggvXz+76M1yX1Q==}
@@ -1097,8 +1094,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.0.0
 
-  '@melandlabs/ai@0.10.2':
-    resolution: {integrity: sha512-airwHcTWbdgU2zWZgR1ZL5oVSb6X43bltEFkv7PBwJiSW4Hvs8ZliSmZCYOBF/qWdJcuXDNA5WHKunz8dFMrTQ==}
+  '@melandlabs/ai@0.10.3':
+    resolution: {integrity: sha512-ndr/wIp4gpBfVGW8waTA8rVO3J04v1cEdr5/DBsXOOtue6F7sL6vOMVTXkJXh3uTOiUn0ZyHQJc8zgCCpZybdA==}
 
   '@melandlabs/contracts@0.6.0':
     resolution: {integrity: sha512-vlnvrikKMP2pOzj1HpsRGHIPu3wmsTFScK2WA34HAIPeoFIomoJrtoQNQ7seIYFnB5tFnjBsGLfaeGZidb/60g==}
@@ -1127,8 +1124,8 @@ packages:
   '@melandlabs/memory-consolidation@0.5.2':
     resolution: {integrity: sha512-pEWl/MniYeySJx5EbLHG/l1ecEtVUoVL2sFgqfT1IO/JFLDu8pTschmwlvcoeaiPCHN08UtFUg3fwbCZOgP98Q==}
 
-  '@melandlabs/memory-store@1.2.4':
-    resolution: {integrity: sha512-RkGb927kfamLA/0cRJ/nRio0QnKZryAhvwJLexYL45Hmw7HLE0AH+sX52WQ6pVCxx2wxcyTzn3B5hDHYLCD6fg==}
+  '@melandlabs/memory-store@1.2.5':
+    resolution: {integrity: sha512-UR5Mzxm2rrXJ1BQNQH96iPqGi7geK/Z+vdT8ZAaXjtyGEF3xByrITD9Z7XGVN+WvZg5wFyP1/krj4wczIxfeOQ==}
     hasBin: true
     peerDependencies:
       '@melandlabs/ai-rag': 0.2.9
@@ -1177,7 +1174,7 @@ packages:
     resolution: {integrity: sha512-3BZQfvBKCgDqIFfLZqZTMSHVkGxslwTP4Tw7rUmiAckAnSuZSOlEUw3Aynw2Ft1L9fke8k6A5QesVjQw6XZVZg==}
 
   '@melandlabs/vsa@0.3.0':
-    resolution: {integrity: sha512-ztexmVlIpsasASFGm9enzvTRpgxyIZCRYIY+nnqpd4u4eb0P1T999Yj2wMM/cN4Vcws3BwpxZDF7lQ6UnzbETw==, tarball: https://registry.npmjs.org/@melandlabs/vsa/-/vsa-0.3.0.tgz}
+    resolution: {integrity: sha512-ztexmVlIpsasASFGm9enzvTRpgxyIZCRYIY+nnqpd4u4eb0P1T999Yj2wMM/cN4Vcws3BwpxZDF7lQ6UnzbETw==}
 
   '@modelcontextprotocol/client@2.0.0':
     resolution: {integrity: sha512-8f1OghQ2rjzIOfqgUCP+8GiUWqRs89njoWLNqAe8kWmDePv3s1fZXseej+QXemssEuuOvLLmLO/kqM3IQHtISw==}
@@ -2139,8 +2136,8 @@ packages:
   fast-fifo@1.3.2:
     resolution: {integrity: sha512-/d9sfos4yxzpwkDkuN7k2SqFKtYNmCTzgfEpz82x34IM9/zc8KGxQoXg1liNC/izpRM/MBdt44Nmx41ZWqk+FQ==}
 
-  fast-uri@3.1.6:
-    resolution: {integrity: sha512-7Ical1vFEMr0onbVzEDIreM22I4khW+fzyQPwvAFWBp1iwdshSZRsL4jjRvPG9JP1uiqMHRto+YU6R2/CzDz5Q==}
+  fast-uri@3.1.7:
+    resolution: {integrity: sha512-dOvZVzjdZdz7phd9v6jCbwxrBW3fK6n8Rc0CtdmM4bumzMnxywBYhuph6J819RRw/ku+rLbelwfMunktuzVVHg==}
 
   fdir@6.5.0:
     resolution: {integrity: sha512-tIbYtZbucOs0BRGqPJkshJUYdL+SDH7dVM8gjy+ERp3WAUjLEFJE+02kanyHtwjWOnwrKYBiwAmM0p4kLJAnXg==}
@@ -2231,8 +2228,8 @@ packages:
     resolution: {integrity: sha512-T2UbfbBEF32wiepXIsMlTW9+dDYC6wMh/t/vYA4tuOMKqWz/n3vr1NFSxQiyP+zk2mXsoMA/i/7qV6LKut1t1A==}
     engines: {node: '>= 0.4'}
 
-  hono@4.13.5:
-    resolution: {integrity: sha512-O6+/eCYRkzzzy0rPWwKLiGBR1nFuUPZynnwjxN1MBA62NNqbT0wQEzQyK2gSO5yDIDB336sXQleAhOHrzlYyKw==}
+  hono@4.13.7:
+    resolution: {integrity: sha512-c8/gF9ac8Y78/agExVocyLevgR+JlpNB444Py0FSX8pJoPdYUfUzRcXtYEYGwt6l19qIlVZPN5Mfsw9jFShmQQ==}
     engines: {node: '>=16.9.0'}
 
   html-escaper@2.0.2:
@@ -2297,6 +2294,9 @@ packages:
   jose@6.2.10:
     resolution: {integrity: sha512-iiW7J9qRFlGxvCOIBDBDxFePQSn7ZMAnrYGhrrOo6siO/MIqwfyilLR27pkfDgUk+raLuzADS8A3S/KLBisc0g==}
 
+  jose@6.2.12:
+    resolution: {integrity: sha512-9NiFmJEex0sy2Dk58j2UGBSHgUs2ypF9eZSu4L6vjOX3Dp96Sw1F3uL+H+D1sx02jZZdzUT0HgvCy59CuvXcWw==}
+
   joycon@3.1.1:
     resolution: {integrity: sha512-34wB/Y7MW7bzjKRjUKTa46I2Z7eV62Rkhva+KkopW7Qvv/OSWBqvkSY7vusOPrNuZcUG3tApvdVgNB8POj3SPw==}
     engines: {node: '>=10'}
@@ -2340,8 +2340,8 @@ packages:
     peerDependencies:
       '@langchain/core': ^1.2.9
 
-  langsmith@0.9.0:
-    resolution: {integrity: sha512-tlg/aG7qezAKY6G3fgADSX7PkRj+JKoF3z7QNkCMsAOvwvuzhiwP9Amn1Z+zAIxuKoWuXQdIjtFN0LVmUC1oUQ==}
+  langsmith@0.10.2:
+    resolution: {integrity: sha512-9iqIcEPBMlRT+vvijcjCo4AeHlJHUZjxwbPtDdvQPpGgvo7nYxhsQ7jVd53zXkPstiPfjRhexfnIe0vLltVFmg==}
     peerDependencies:
       '@opentelemetry/api': '*'
       '@opentelemetry/exporter-trace-otlp-proto': '*'
@@ -2585,8 +2585,8 @@ packages:
       zod:
         optional: true
 
-  openai@7.8.0:
-    resolution: {integrity: sha512-/2g9JzdnXNcjX1W/UlSNu+OdSFDAaAVt0n9Onom0kPenH54o59G2WrX/xjTnr26UHNSh6hxcAf58doGYRme2rw==}
+  openai@7.10.0:
+    resolution: {integrity: sha512-sn9t2Kls7O52PwuF9BUTYNu4Gk/r0lXJyrgaNht4TNRlZFb3dJIGO0RciSgjARGCBRtWjySubAQFJttlzUvGQQ==}
     engines: {node: '>=22.0.0'}
     peerDependencies:
       '@aws-sdk/credential-provider-node': '>=3.972.0 <4'
@@ -3073,8 +3073,8 @@ packages:
     resolution: {integrity: sha512-LIY910g9TI13YS95lrMFrs8Rm/u/irgHeTWoKCoteeJ04CUJ92eEfj0rVn+7VKMPBpUPiUoBKfhNyLI23EE/KA==}
     engines: {node: '>=18.17'}
 
-  undici@7.29.0:
-    resolution: {integrity: sha512-IDxfleLmmbSskfWSUATiN1nfn2rDuvnMOqb5CWR92iIfojA0Ud+ulOAAEQ57LPr9rWmsreUyf5lwyao+7GNNVw==}
+  undici@7.29.1:
+    resolution: {integrity: sha512-RYONW2MeafgYlkVOKYKkA/Ag7BmXqgIWCa8t1m0JcxrQg9pI9lEqRhAOruOBCbAohOa/gkCF+iPi9hrgvTzu6Q==}
     engines: {node: '>=20.18.1'}
 
   unpipe@1.0.0:
@@ -3247,10 +3247,10 @@ snapshots:
       '@ai-sdk/provider-utils': 3.0.0-beta.2(zod@4.5.4)
       zod: 4.5.4
 
-  '@ai-sdk/openai-compatible@1.0.52(zod@4.5.4)':
+  '@ai-sdk/openai-compatible@1.0.53(zod@4.5.4)':
     dependencies:
       '@ai-sdk/provider': 2.0.3
-      '@ai-sdk/provider-utils': 3.0.35(zod@4.5.4)
+      '@ai-sdk/provider-utils': 3.0.36(zod@4.5.4)
       zod: 4.5.4
 
   '@ai-sdk/provider-utils@3.0.0-beta.2(zod@4.5.4)':
@@ -3261,7 +3261,7 @@ snapshots:
       zod: 4.5.4
       zod-to-json-schema: 3.25.2(zod@4.5.4)
 
-  '@ai-sdk/provider-utils@3.0.35(zod@4.5.4)':
+  '@ai-sdk/provider-utils@3.0.36(zod@4.5.4)':
     dependencies:
       '@ai-sdk/provider': 2.0.3
       '@standard-schema/spec': 1.1.0
@@ -3289,43 +3289,43 @@ snapshots:
     dependencies:
       json-schema: 0.4.0
 
-  '@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-darwin-arm64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-darwin-x64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-linux-arm64-musl@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-linux-arm64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-linux-x64-musl@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-linux-x64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-linux-x64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-win32-arm64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.251':
+  '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.263':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk@0.3.251(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.5.4)':
+  '@anthropic-ai/claude-agent-sdk@0.3.263(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.5.4)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)
       zod: 4.5.4
     optionalDependencies:
-      '@anthropic-ai/claude-agent-sdk-darwin-arm64': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-darwin-x64': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-linux-arm64': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-linux-arm64-musl': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-linux-x64': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-linux-x64-musl': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-win32-arm64': 0.3.251
-      '@anthropic-ai/claude-agent-sdk-win32-x64': 0.3.251
+      '@anthropic-ai/claude-agent-sdk-darwin-arm64': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-darwin-x64': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-linux-arm64': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-linux-arm64-musl': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-linux-x64': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-linux-x64-musl': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-win32-arm64': 0.3.263
+      '@anthropic-ai/claude-agent-sdk-win32-x64': 0.3.263
 
   '@babel/helper-string-parser@7.29.7': {}
 
@@ -3535,9 +3535,9 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@hono/node-server@1.19.17(hono@4.13.5)':
+  '@hono/node-server@1.19.17(hono@4.13.7)':
     dependencies:
-      hono: 4.13.5
+      hono: 4.13.7
 
   '@jridgewell/gen-mapping@0.3.13':
     dependencies:
@@ -3553,10 +3553,10 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@langchain/classic@1.0.45(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))(undici@6.28.0)':
+  '@langchain/classic@1.0.46(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))(undici@6.28.0)':
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
-      '@langchain/openai': 1.5.10(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)
+      '@langchain/openai': 1.5.11(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)
       '@langchain/textsplitters': 1.0.1(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))
       handlebars: 4.7.9
       js-yaml: 5.4.1
@@ -3565,7 +3565,7 @@ snapshots:
       yaml: 2.9.0
       zod: 4.5.4
     optionalDependencies:
-      langsmith: 0.9.0(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
+      langsmith: 0.10.2(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - '@opentelemetry/api'
@@ -3579,13 +3579,13 @@ snapshots:
 
   '@langchain/community@1.1.29(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(better-sqlite3@11.10.0)(openai@4.104.0(zod@4.5.4))(pg@8.23.0)(undici@6.28.0)':
     dependencies:
-      '@langchain/classic': 1.0.45(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))(undici@6.28.0)
+      '@langchain/classic': 1.0.46(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))(undici@6.28.0)
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
-      '@langchain/openai': 1.5.10(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)
+      '@langchain/openai': 1.5.11(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)
       binary-extensions: 2.3.0
       flat: 5.0.2
       js-yaml: 4.3.2
-      langsmith: 0.9.0(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
+      langsmith: 0.10.2(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       math-expression-evaluator: 2.0.7
       openai: 4.104.0(zod@4.5.4)
       uuid: 14.0.2
@@ -3606,7 +3606,7 @@ snapshots:
       '@cfworker/json-schema': 4.1.1
       '@standard-schema/spec': 1.1.0
       js-tiktoken: 1.0.21
-      langsmith: 0.9.0(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
+      langsmith: 0.10.2(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       mustache: 4.2.0
       p-queue: 6.6.2
       zod: 4.5.4
@@ -3621,7 +3621,7 @@ snapshots:
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
 
-  '@langchain/langgraph-sdk@1.10.0(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))':
+  '@langchain/langgraph-sdk@1.10.2(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))':
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       '@langchain/protocol': 0.0.19
@@ -3629,23 +3629,23 @@ snapshots:
       p-queue: 9.3.3
       p-retry: 7.1.1
 
-  '@langchain/langgraph@1.4.13(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(zod@4.5.4)':
+  '@langchain/langgraph@1.4.14(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(zod@4.5.4)':
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))
-      '@langchain/langgraph-sdk': 1.10.0(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))
-      '@langchain/protocol': 0.0.18
+      '@langchain/langgraph-sdk': 1.10.2(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))
+      '@langchain/protocol': 0.0.19
       '@standard-schema/spec': 1.1.0
       zod: 4.5.4
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@langchain/openai@1.5.10(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)':
+  '@langchain/openai@1.5.11(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(undici@6.28.0)':
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       js-tiktoken: 1.0.21
-      openai: 7.8.0(undici@6.28.0)(zod@4.5.4)
+      openai: 7.10.0(undici@6.28.0)(zod@4.5.4)
       zod: 4.5.4
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
@@ -3654,8 +3654,6 @@ snapshots:
       - undici
       - ws
 
-  '@langchain/protocol@0.0.18': {}
-
   '@langchain/protocol@0.0.19': {}
 
   '@langchain/textsplitters@1.0.1(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))':
@@ -3663,12 +3661,12 @@ snapshots:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       js-tiktoken: 1.0.21
 
-  '@melandlabs/ai@0.10.2(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))':
+  '@melandlabs/ai@0.10.3(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))':
     dependencies:
       '@agentclientprotocol/sdk': 0.22.1(zod@4.5.4)
       '@ai-sdk/anthropic': 4.0.0-beta.67(zod@4.5.4)
-      '@ai-sdk/openai-compatible': 1.0.52(zod@4.5.4)
-      '@anthropic-ai/claude-agent-sdk': 0.3.251(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.5.4)
+      '@ai-sdk/openai-compatible': 1.0.53(zod@4.5.4)
+      '@anthropic-ai/claude-agent-sdk': 0.3.263(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.5.4)
       '@melandlabs/contracts': 0.7.0(zod@4.5.4)
       '@melandlabs/env-config': 0.4.0
       '@melandlabs/memory-consolidation': 0.5.2
@@ -3706,20 +3704,20 @@ snapshots:
 
   '@melandlabs/memory-consolidation@0.5.2': {}
 
-  '@melandlabs/memory-store@1.2.4(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
+  '@melandlabs/memory-store@1.2.5(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
     dependencies:
-      '@hono/node-server': 1.19.17(hono@4.13.5)
-      '@melandlabs/ai': 0.10.2(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))
+      '@hono/node-server': 1.19.17(hono@4.13.7)
+      '@melandlabs/ai': 0.10.3(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))
       '@melandlabs/contracts': 0.7.0(zod@4.5.4)
       '@melandlabs/env-config': 0.4.0
       '@melandlabs/memory-consolidation': 0.5.2
-      '@melandlabs/okf': 0.3.1(@hono/node-server@1.19.17(hono@4.13.5))(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(hono@4.13.5)(zod@4.5.4)
+      '@melandlabs/okf': 0.3.1(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(hono@4.13.7)(zod@4.5.4)
       '@melandlabs/rag': 0.3.0(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
       '@melandlabs/shared': 0.4.0
       '@melandlabs/sqlite': 0.5.2(zod@4.5.4)
       '@melandlabs/vsa': 0.3.0
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)
-      hono: 4.13.5
+      hono: 4.13.7
       zod: 4.5.4
     optionalDependencies:
       '@melandlabs/indexeddb': 0.5.8(zod@4.5.4)
@@ -3878,15 +3876,15 @@ snapshots:
       - ws
       - youtubei.js
 
-  '@melandlabs/okf@0.3.1(@hono/node-server@1.19.17(hono@4.13.5))(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(hono@4.13.5)(zod@4.5.4)':
+  '@melandlabs/okf@0.3.1(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.8(zod@4.5.4))(hono@4.13.7)(zod@4.5.4)':
     dependencies:
       '@melandlabs/contracts': 0.7.0(zod@4.5.4)
       yaml: 2.9.0
       zod: 4.5.4
     optionalDependencies:
-      '@hono/node-server': 1.19.17(hono@4.13.5)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       '@melandlabs/indexeddb': 0.5.8(zod@4.5.4)
-      hono: 4.13.5
+      hono: 4.13.7
 
   '@melandlabs/rag@0.3.0(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
     dependencies:
@@ -4093,7 +4091,7 @@ snapshots:
 
   '@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1)':
     dependencies:
-      '@hono/node-server': 1.19.17(hono@4.13.5)
+      '@hono/node-server': 1.19.17(hono@4.13.7)
       ajv: 8.20.0
       ajv-formats: 3.0.1
       content-type: 1.0.5
@@ -4103,8 +4101,8 @@ snapshots:
       eventsource-parser: 3.1.1
       express: 5.2.1
       express-rate-limit: 8.7.0(express@5.2.1)
-      hono: 4.13.5
-      jose: 6.2.10
+      hono: 4.13.7
+      jose: 6.2.12
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
@@ -4410,7 +4408,7 @@ snapshots:
       ms: 2.1.3
       picocolors: 1.1.1
       tar-stream: 3.1.7
-      undici: 7.29.0
+      undici: 7.29.1
       xdg-app-paths: 5.1.0
       zod: 3.24.4
     transitivePeerDependencies:
@@ -4506,7 +4504,7 @@ snapshots:
   ajv@8.20.0:
     dependencies:
       fast-deep-equal: 3.1.3
-      fast-uri: 3.1.6
+      fast-uri: 3.1.7
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
@@ -4831,7 +4829,7 @@ snapshots:
 
   fast-fifo@1.3.2: {}
 
-  fast-uri@3.1.6: {}
+  fast-uri@3.1.7: {}
 
   fdir@6.5.0(picomatch@4.0.7):
     optionalDependencies:
@@ -4927,7 +4925,7 @@ snapshots:
     dependencies:
       function-bind: 1.1.2
 
-  hono@4.13.5: {}
+  hono@4.13.7: {}
 
   html-escaper@2.0.2: {}
 
@@ -4982,6 +4980,8 @@ snapshots:
 
   jose@6.2.10: {}
 
+  jose@6.2.12: {}
+
   joycon@3.1.1: {}
 
   js-tiktoken@1.0.21:
@@ -5018,9 +5018,9 @@ snapshots:
   langchain@1.5.10(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)):
     dependencies:
       '@langchain/core': 1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
-      '@langchain/langgraph': 1.4.13(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(zod@4.5.4)
+      '@langchain/langgraph': 1.4.14(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))(zod@4.5.4)
       '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.9(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)))
-      langsmith: 0.9.0(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
+      langsmith: 0.10.2(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4))
       zod: 4.5.4
     transitivePeerDependencies:
       - '@opentelemetry/api'
@@ -5031,7 +5031,7 @@ snapshots:
       - react-dom
       - ws
 
-  langsmith@0.9.0(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)):
+  langsmith@0.10.2(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.5.4)):
     dependencies:
       p-queue: 6.6.2
     optionalDependencies:
@@ -5206,7 +5206,7 @@ snapshots:
     transitivePeerDependencies:
       - encoding
 
-  openai@7.8.0(undici@6.28.0)(zod@4.5.4):
+  openai@7.10.0(undici@6.28.0)(zod@4.5.4):
     optionalDependencies:
       undici: 6.28.0
       zod: 4.5.4
@@ -5753,7 +5753,7 @@ snapshots:
 
   undici@6.28.0: {}
 
-  undici@7.29.0: {}
+  undici@7.29.1: {}
 
   unpipe@1.0.0: {}
 
