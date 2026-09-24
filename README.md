@@ -48,33 +48,34 @@ Requirements:
 ```bash
 pnpm install
 pnpm check
-pnpm build
 ```
+
+Run the following commands from this repository root using the CLI you just built. In another Git repository, replace the script path with the absolute path to the ContextWeft build; after installing a published package, use `ctxweft` directly.
 
 Initialize a Git repository for local ContextWeft state:
 
 ```bash
-ctxweft init --name "My workspace"
-ctxweft task start --title "Continue feature work" --goal "Ship the next verified change"
-ctxweft task status
+node apps/cli/dist/main.js init --name "My workspace"
+node apps/cli/dist/main.js task start --title "Continue feature work" --goal "Ship the next verified change"
+node apps/cli/dist/main.js task status
 ```
 
 Create a checkpoint from JSON:
 
 ```bash
-ctxweft checkpoint --work-item work_123 --input checkpoint.json
+node apps/cli/dist/main.js checkpoint --work-item work_123 --input checkpoint.json
 ```
 
 Bootstrap the next agent:
 
 ```bash
-ctxweft bootstrap --work-item work_123 --intent "Continue implementation"
+node apps/cli/dist/main.js bootstrap --work-item work_123 --intent "Continue implementation"
 ```
 
 Run the MCP server:
 
 ```bash
-ctxweft mcp
+node apps/cli/dist/main.js mcp
 ```
 
 ## MCP Clients
@@ -82,15 +83,15 @@ ctxweft mcp
 Generate setup guidance without modifying any user config:
 
 ```bash
-ctxweft setup codex
-ctxweft setup cursor
-ctxweft setup claude-code
+node apps/cli/dist/main.js setup codex
+node apps/cli/dist/main.js setup cursor
+node apps/cli/dist/main.js setup claude-code
 ```
 
 JSON output is available for automation:
 
 ```bash
-ctxweft setup cursor --json
+node apps/cli/dist/main.js setup cursor --json
 ```
 
 The MCP server currently exposes:
@@ -124,6 +125,7 @@ pnpm typecheck
 pnpm test
 pnpm test:performance
 pnpm build
+pnpm test:stdio
 pnpm security:audit
 ```
 

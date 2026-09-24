@@ -15,6 +15,7 @@ pnpm build
 ```
 
 本地开发测试建议使用构建产物的绝对路径，避免 Cursor 找不到 `ctxweft` 命令。
+在 ContextWeft 仓库根目录执行 `pwd`，把下面示例中的 `/absolute/path/to/ContextWeft` 换成输出的绝对路径。
 
 ## Cursor MCP 配置
 
@@ -26,7 +27,7 @@ pnpm build
     "contextweft": {
       "command": "node",
       "args": [
-        "/Users/jackeyhuang/Documents/github/ContextWeft/apps/cli/dist/main.js",
+        "/absolute/path/to/ContextWeft/apps/cli/dist/main.js",
         "mcp"
       ]
     }
@@ -65,6 +66,7 @@ ContextWeft MCP Server 当前暴露这些工具：
 ## Smoke Test
 
 在 Cursor Chat 中使用 Agent 模式，并允许它调用 MCP 工具。建议从下面几条提示词开始。
+写入工具需要 `idempotencyKey`。重试同一操作时保持 key 不变，新操作使用新 key。
 
 ### 1. 初始化 workspace
 
@@ -81,7 +83,7 @@ ContextWeft MCP Server 当前暴露这些工具：
 ### 2. 创建 work item
 
 ```text
-请使用 ContextWeft MCP 创建一个 work item。title 是 "Verify Cursor MCP"，goal 是 "Validate ContextWeft MCP tools from Cursor"，workspaceId 使用刚才返回的值。完成后告诉我 workItemId。
+请使用 ContextWeft MCP 创建一个 work item。title 是 "Verify Cursor MCP"，goal 是 "Validate ContextWeft MCP tools from Cursor"，idempotencyKey 是 "cursor-smoke-work-item"，workspaceId 使用刚才返回的值。完成后告诉我 workItemId。
 ```
 
 预期结果：
@@ -92,7 +94,7 @@ ContextWeft MCP Server 当前暴露这些工具：
 ### 3. 记录一条长期记忆
 
 ```text
-请使用 ContextWeft MCP 记录一条 memory：content 是 "Cursor can connect to the local ContextWeft MCP server."，kind 是 "fact"，confidence 是 1。workspaceId 和 workItemId 使用刚才创建的值。
+请使用 ContextWeft MCP 记录一条 memory：content 是 "Cursor can connect to the local ContextWeft MCP server."，kind 是 "fact"，confidence 是 1，idempotencyKey 是 "cursor-smoke-memory"。workspaceId 和 workItemId 使用刚才创建的值。
 ```
 
 预期结果：
@@ -104,7 +106,7 @@ ContextWeft MCP Server 当前暴露这些工具：
 ### 4. 创建 checkpoint
 
 ```text
-请使用 ContextWeft MCP 创建 checkpoint。summary 是 "Cursor MCP smoke test completed."，completed 包含 "Initialized workspace"、"Started work item"、"Recorded memory"，nextActions 包含 "Run bootstrap from Cursor"，workspaceId 和 workItemId 使用刚才的值。
+请使用 ContextWeft MCP 创建 checkpoint。summary 是 "Cursor MCP smoke test completed."，completed 包含 "Initialized workspace"、"Started work item"、"Recorded memory"，nextActions 包含 "Run bootstrap from Cursor"，idempotencyKey 是 "cursor-smoke-checkpoint"，workspaceId 和 workItemId 使用刚才的值。
 ```
 
 预期结果：
@@ -164,7 +166,7 @@ ctxweft task status --json
     "contextweft": {
       "command": "node",
       "args": [
-        "/Users/jackeyhuang/Documents/github/ContextWeft/apps/cli/dist/main.js",
+        "/absolute/path/to/ContextWeft/apps/cli/dist/main.js",
         "mcp"
       ]
     }
@@ -182,7 +184,7 @@ test -f apps/cli/dist/main.js && echo ok
 
 - 确认 `.cursor/mcp.json` 是合法 JSON
 - 重启 Cursor 或 reload MCP servers
-- 确认当前打开的是 `/Users/jackeyhuang/Documents/github/ContextWeft`
+- 确认当前打开的是需要测试的 Git 仓库，并且 Cursor 配置中的 CLI 路径指向实际构建产物
 - 确认 `pnpm build` 已成功
 
 ### doctor 显示 derived memory unavailable
