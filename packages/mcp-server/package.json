@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/mcp-server",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "Stable MCP tool surface for ContextWeft application services.",
   "type": "module",
   "license": "Apache-2.0",

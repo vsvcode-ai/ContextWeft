@@ -122,6 +122,7 @@ pnpm test
 pnpm test:performance
 pnpm build
 pnpm test:stdio
+pnpm test:package
 pnpm security:audit
 ```
 
@@ -145,6 +146,8 @@ pnpm bench
 - MCP 是第一阶段公开互操作边界；后续可以在其上叠加原生编辑器集成。
 
 已实现的架构决策见 [docs/adr](docs/adr)。
+
+首个 alpha 的发布与验收步骤见 [docs/releasing.md](docs/releasing.md)。
 
 ## 开源协议
 

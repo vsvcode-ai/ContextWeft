@@ -126,6 +126,7 @@ pnpm test
 pnpm test:performance
 pnpm build
 pnpm test:stdio
+pnpm test:package
 pnpm security:audit
 ```
 
@@ -150,6 +151,8 @@ pnpm bench
   can be layered on top later.
 
 See [docs/adr](docs/adr) for implemented architecture decisions.
+
+The alpha release checklist is in [docs/releasing.md](docs/releasing.md).
 
 ## License
 

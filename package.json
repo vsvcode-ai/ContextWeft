@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "pnpm -r --if-present build",
-    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:performance && pnpm build && pnpm test:stdio && pnpm security:audit",
+    "check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm test:performance && pnpm build && pnpm test:stdio && pnpm test:package && pnpm security:audit",
     "clean": "pnpm -r --if-present clean",
     "format": "biome format --write .",
     "format:check": "biome format .",
@@ -21,6 +21,7 @@
     "security:audit": "pnpm audit --prod --audit-level high --registry=https://registry.npmjs.org",
     "test": "vitest run --config vitest.config.ts",
     "test:stdio": "node --test packages/mcp-server/test/stdio-smoke.test.mjs",
+    "test:package": "node --test tests/package-smoke.test.mjs",
     "test:coverage": "vitest run --coverage --config vitest.config.ts",
     "test:performance": "vitest run --config vitest.performance.config.ts",
     "bench": "pnpm -r --if-present bench",
