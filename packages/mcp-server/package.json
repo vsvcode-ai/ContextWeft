@@ -27,7 +27,7 @@
     "@contextweft/application": "workspace:*",
     "@contextweft/contracts": "workspace:*",
     "@modelcontextprotocol/server": "2.0.0",
-    "zod": "4.5.4"
+    "zod": "4.6.5"
   },
   "devDependencies": {
     "@modelcontextprotocol/client": "2.0.0"

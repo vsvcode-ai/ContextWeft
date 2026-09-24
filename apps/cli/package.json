@@ -33,6 +33,6 @@
     "@contextweft/mcp-server": "workspace:*",
     "@contextweft/opencontext-adapter": "workspace:*",
     "@contextweft/storage": "workspace:*",
-    "zod": "4.5.4"
+    "zod": "4.6.5"
   }
 }
