@@ -1,5 +1,5 @@
 /**
- * Narrow structural boundary around OpenContext memory-store 1.2.x.
+ * Narrow structural boundary around OpenContext memory-store 1.3.x.
  *
  * OpenContext is intentionally kept behind this module because it is pre-1.0
  * and its facade exposes a much larger API than ContextWeft needs. Runtime

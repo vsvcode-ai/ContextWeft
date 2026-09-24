@@ -17,7 +17,7 @@ export class ExecFileGitCommandRunner implements GitCommandRunner {
           windowsHide: true,
         },
         (error, stdout, stderr) => {
-          /* v8 ignore next -- Node normally reports child_process exit codes as numbers here. */
+          /* v8 ignore next -- @preserve Node normally reports child_process exit codes as numbers here. */
           const exitCode =
             error !== null && typeof error.code === "number" ? error.code : error === null ? 0 : 1;
           resolve({ exitCode, stdout, stderr });

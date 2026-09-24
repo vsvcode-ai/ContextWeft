@@ -82,7 +82,7 @@ export class DeterministicContextCompiler implements ContextCompiler {
       throw new CompilerInputError("A work_item.created or goal.updated event is required");
     }
 
-    /* v8 ignore next -- findLatest is constrained to the supported goal event types above. */
+    /* v8 ignore next -- @preserve findLatest is constrained to the supported goal event types above. */
     if (goalEvent.eventType !== "goal.updated" && goalEvent.eventType !== "work_item.created") {
       throw new CompilerInputError("Internal compiler error: unsupported goal event");
     }
@@ -459,7 +459,7 @@ function latestTimestamp(
     timestamps.push(currentGit.observedAt);
   }
   const latest = timestamps.sort().at(-1);
-  /* v8 ignore next -- compile requires a goal event before snapshot time is calculated. */
+  /* v8 ignore next -- @preserve compile requires a goal event before snapshot time is calculated. */
   if (latest === undefined) {
     throw new CompilerInputError("At least one event is required to compile a ContextPack");
   }

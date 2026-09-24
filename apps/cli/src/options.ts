@@ -14,7 +14,7 @@ export function parseOptions(
   const values = new Map<string, string | true>();
   for (let index = 0; index < args.length; index += 1) {
     const token = args[index];
-    /* v8 ignore next -- loop bounds guarantee an indexed token exists. */
+    /* v8 ignore next -- @preserve loop bounds guarantee an indexed token exists. */
     if (token === undefined) {
       throw new CliUsageError("Unexpected positional argument: ");
     }

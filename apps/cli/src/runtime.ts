@@ -66,7 +66,7 @@ export async function openContextWeftRuntime(
     memory = openContextMemory;
     await chmod(memoryDatabasePath, 0o600);
   } catch (error) {
-    /* v8 ignore next -- covers the rare half-open OpenContext cleanup path. */
+    /* v8 ignore next -- @preserve covers the rare half-open OpenContext cleanup path. */
     await openContextMemory?.close().catch(() => undefined);
     openContextMemory = undefined;
     const reason = `OpenContext memory is unavailable (${errorMessage(error)})`;
@@ -129,7 +129,7 @@ async function pathExists(path: string): Promise<boolean> {
     await lstat(path);
     return true;
   } catch (error) {
-    /* v8 ignore next -- non-ENOENT lstat failures depend on host filesystem races/permissions. */
+    /* v8 ignore next -- @preserve non-ENOENT lstat failures depend on host filesystem races/permissions. */
     if (isMissingFile(error)) {
       return false;
     }
@@ -141,11 +141,11 @@ function isMissingFile(error: unknown): boolean {
   return typeof error === "object" && error !== null && "code" in error && error.code === "ENOENT";
 }
 
-/* v8 ignore start -- runtime startup errors normally arrive as Error objects. */
+/* v8 ignore start -- @preserve runtime startup errors normally arrive as Error objects. */
 function errorMessage(error: unknown): string {
   if (error instanceof Error) {
     return error.message;
   }
   return String(error);
 }
-/* v8 ignore stop */
+/* v8 ignore stop -- @preserve */
