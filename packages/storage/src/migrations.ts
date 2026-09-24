@@ -87,7 +87,7 @@ const MIGRATIONS: readonly Migration[] = [
   },
 ];
 
-/* v8 ignore next -- the migration list is a compile-time invariant. */
+/* v8 ignore next -- @preserve the migration list is a compile-time invariant. */
 export const LATEST_SCHEMA_VERSION = MIGRATIONS.at(-1)?.version ?? 0;
 
 /** Applies every migration atomically and records the version in SQLite itself. */

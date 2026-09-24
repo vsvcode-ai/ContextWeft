@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/application",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "ContextWeft application services for checkpoints, handoffs, and bootstrapping.",
   "type": "module",
   "license": "Apache-2.0",

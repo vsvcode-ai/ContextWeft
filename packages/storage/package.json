@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/storage",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "Canonical SQLite storage for ContextWeft workspaces, events, and artifacts.",
   "type": "module",
   "license": "Apache-2.0",

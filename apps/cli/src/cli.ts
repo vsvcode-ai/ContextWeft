@@ -386,7 +386,7 @@ function runSetup(args: readonly string[], io: CliIo): number {
   return 0;
 }
 
-/* v8 ignore start -- live stdio signal shutdown is exercised by MCP integration, not unit coverage. */
+/* v8 ignore start -- @preserve live stdio signal shutdown is exercised by MCP integration, not unit coverage. */
 async function runMcp(
   args: readonly string[],
   cwd: string,
@@ -431,7 +431,7 @@ async function runMcp(
     }
   });
 }
-/* v8 ignore stop */
+/* v8 ignore stop -- @preserve */
 
 async function withRuntime<T>(
   openRuntime: NonNullable<RunCliOptions["openRuntime"]>,

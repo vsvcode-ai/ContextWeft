@@ -301,7 +301,7 @@ export class SqliteCanonicalRepository implements CanonicalRepository {
           | undefined;
         if (existingByKey !== undefined) {
           const existing = decodeEvent(existingByKey);
-          /* v8 ignore next -- equal content would have matched existingById before this lookup. */
+          /* v8 ignore next -- @preserve equal content would have matched existingById before this lookup. */
           if (canonicalJson(existing) !== canonicalJson(event)) {
             throw new IdempotencyConflictError(event.idempotencyKey);
           }

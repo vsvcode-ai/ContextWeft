@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/git-adapter",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "Secure and deterministic Git workspace snapshots for ContextWeft.",
   "type": "module",
   "license": "Apache-2.0",

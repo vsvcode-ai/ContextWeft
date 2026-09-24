@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/cli",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "ContextWeft command-line interface and MCP stdio entrypoint.",
   "type": "module",
   "license": "Apache-2.0",
@@ -33,6 +33,6 @@
     "@contextweft/mcp-server": "workspace:*",
     "@contextweft/opencontext-adapter": "workspace:*",
     "@contextweft/storage": "workspace:*",
-    "zod": "4.5.4"
+    "zod": "4.6.5"
   }
 }

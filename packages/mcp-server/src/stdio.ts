@@ -9,7 +9,7 @@ export function serveContextWeftStdio(
   options: CreateContextWeftMcpServerOptions,
   onerror?: (error: Error) => void,
 ): StdioServerHandle {
-  /* v8 ignore next -- stdio transport option wiring is exercised by the MCP runtime. */
+  /* v8 ignore next -- @preserve stdio transport option wiring is exercised by the MCP runtime. */
   return serveStdio(() => createContextWeftMcpServer(options), {
     legacy: "serve",
     ...(onerror === undefined ? {} : { onerror }),

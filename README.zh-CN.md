@@ -45,33 +45,34 @@ tag 之前公开 API 仍可能调整。
 ```bash
 pnpm install
 pnpm check
-pnpm build
 ```
+
+以下命令在仓库根目录执行，使用刚构建的 CLI。在另一个 Git 仓库中使用时，请把脚本路径换成 ContextWeft 构建产物的绝对路径；安装发布包后可直接使用 `ctxweft`。
 
 在 Git 仓库中初始化 ContextWeft 本地状态：
 
 ```bash
-ctxweft init --name "My workspace"
-ctxweft task start --title "Continue feature work" --goal "Ship the next verified change"
-ctxweft task status
+node apps/cli/dist/main.js init --name "My workspace"
+node apps/cli/dist/main.js task start --title "Continue feature work" --goal "Ship the next verified change"
+node apps/cli/dist/main.js task status
 ```
 
 通过 JSON 创建 checkpoint：
 
 ```bash
-ctxweft checkpoint --work-item work_123 --input checkpoint.json
+node apps/cli/dist/main.js checkpoint --work-item work_123 --input checkpoint.json
 ```
 
 让下一个智能体继承上下文：
 
 ```bash
-ctxweft bootstrap --work-item work_123 --intent "Continue implementation"
+node apps/cli/dist/main.js bootstrap --work-item work_123 --intent "Continue implementation"
 ```
 
 启动 MCP server：
 
 ```bash
-ctxweft mcp
+node apps/cli/dist/main.js mcp
 ```
 
 ## MCP 客户端
@@ -79,15 +80,15 @@ ctxweft mcp
 生成配置说明，不会修改用户本机配置：
 
 ```bash
-ctxweft setup codex
-ctxweft setup cursor
-ctxweft setup claude-code
+node apps/cli/dist/main.js setup codex
+node apps/cli/dist/main.js setup cursor
+node apps/cli/dist/main.js setup claude-code
 ```
 
 自动化场景可以使用 JSON 输出：
 
 ```bash
-ctxweft setup cursor --json
+node apps/cli/dist/main.js setup cursor --json
 ```
 
 当前 MCP server 暴露以下工具：
@@ -120,6 +121,8 @@ pnpm typecheck
 pnpm test
 pnpm test:performance
 pnpm build
+pnpm test:stdio
+pnpm test:package
 pnpm security:audit
 ```
 
@@ -143,6 +146,8 @@ pnpm bench
 - MCP 是第一阶段公开互操作边界；后续可以在其上叠加原生编辑器集成。
 
 已实现的架构决策见 [docs/adr](docs/adr)。
+
+首个 alpha 的发布与验收步骤见 [docs/releasing.md](docs/releasing.md)。
 
 ## 开源协议
 

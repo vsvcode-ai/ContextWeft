@@ -1,6 +1,6 @@
 {
   "name": "@contextweft/contracts",
-  "version": "0.0.0-development",
+  "version": "0.1.0-alpha.1",
   "description": "Versioned ContextWeft domain contracts and JSON Schemas.",
   "type": "module",
   "license": "Apache-2.0",

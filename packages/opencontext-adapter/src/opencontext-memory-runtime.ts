@@ -15,7 +15,7 @@ import type {
 } from "./opencontext-boundary.js";
 
 const PLATFORM = "contextweft" as const;
-const EXPECTED_OPENCONTEXT_VERSION = "@melandlabs/memory-store 1.2.x";
+const EXPECTED_OPENCONTEXT_VERSION = "@melandlabs/memory-store 1.3.x";
 
 let activeDefaultRuntime: OpenContextMemoryRuntime | undefined;
 let defaultRuntimeOpening = false;
@@ -58,7 +58,7 @@ export class OpenContextMemoryRuntime implements MemoryRuntime {
     const usesDefaultFactory = options.factory === undefined;
     if (usesDefaultFactory && (activeDefaultRuntime !== undefined || defaultRuntimeOpening)) {
       throw new OpenContextRuntimeStateError(
-        "OpenContext memory-store 1.2 uses process-global SQLite state; close the active runtime before opening another one",
+        "Embedded OpenContext memory uses process-global SQLite state; close the active runtime before opening another one",
       );
     }
 
@@ -236,7 +236,7 @@ function canonicalMemoryEvents(events: readonly ContextEvent[]): ContextEvent[] 
 }
 
 function toRawMessage(event: ContextEvent): OpenContextRawMessageInput {
-  /* v8 ignore next -- canonicalMemoryEvents filters inputs before this mapper is called. */
+  /* v8 ignore next -- @preserve canonicalMemoryEvents filters inputs before this mapper is called. */
   if (event.eventType !== "memory.recorded" && event.eventType !== "memory.corrected") {
     throw new OpenContextRuntimeStateError(`Event ${event.eventId} is not a memory event`);
   }
@@ -355,7 +355,7 @@ function assertRawMessageManager(candidate: unknown): OpenContextRawMessageManag
 
 function compatibilityError(detail: string): OpenContextCompatibilityError {
   return new OpenContextCompatibilityError(
-    `${detail}; ContextWeft expects @melandlabs/opencontext ${EXPECTED_OPENCONTEXT_VERSION}`,
+    `${detail}; ContextWeft expects ${EXPECTED_OPENCONTEXT_VERSION}`,
   );
 }
 

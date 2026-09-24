@@ -29,7 +29,7 @@ export function mapToolError(error: unknown): ContextWeftToolError {
 }
 
 function safeMessage(error: unknown): string {
-  /* v8 ignore next -- mapToolError calls safeMessage only after matching Error.name. */
+  /* v8 ignore next -- @preserve mapToolError calls safeMessage only after matching Error.name. */
   if (error instanceof Error) {
     return error.message.slice(0, 2_048);
   }
