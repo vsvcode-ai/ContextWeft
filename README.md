@@ -1,5 +1,7 @@
 # ContextWeft
 
+[Project Wiki](https://github.com/vsvcode-ai/ContextWeft/wiki): development status, integration guides, and the headless handoff design.
+
 English | [Simplified Chinese](README.zh-CN.md)
 
 Portable, permission-aware context infrastructure for AI agents.

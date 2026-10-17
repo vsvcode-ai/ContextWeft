@@ -2,6 +2,8 @@
 
 [English](README.md) | 简体中文
 
+[项目 Wiki](https://github.com/vsvcode-ai/ContextWeft/wiki)：开发进展、接入指南与无界面交接方案。
+
 为 AI 智能体提供可移植、权限感知的上下文基础设施。
 
 ContextWeft 的目标是在编辑器、模型和智能体之间提供一层统一的 canonical
@@ -146,6 +148,8 @@ pnpm bench
 - MCP 是第一阶段公开互操作边界；后续可以在其上叠加原生编辑器集成。
 
 已实现的架构决策见 [docs/adr](docs/adr)。
+
+后续开发按[无界面交接实现方案](docs/headless-handoff-design.zh-CN.md)推进；方案已合入复核结论，新增功能待实现。
 
 首个 alpha 的发布与验收步骤见 [docs/releasing.md](docs/releasing.md)。
 
