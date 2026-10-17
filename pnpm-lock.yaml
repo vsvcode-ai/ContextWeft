@@ -73,8 +73,8 @@ importers:
         specifier: workspace:*
         version: link:../../packages/storage
       zod:
-        specifier: 4.6.5
-        version: 4.6.5
+        specifier: 4.6.6
+        version: 4.6.6
 
   packages/application:
     dependencies:
@@ -121,8 +121,8 @@ importers:
         specifier: 2.3.1
         version: 2.3.1
       zod:
-        specifier: 4.6.5
-        version: 4.6.5
+        specifier: 4.6.6
+        version: 4.6.6
     devDependencies:
       '@modelcontextprotocol/client':
         specifier: 2.0.0
@@ -141,7 +141,7 @@ importers:
         version: link:../contracts
       '@melandlabs/memory-store':
         specifier: 1.3.1
-        version: 1.3.1(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.9(zod@4.6.5))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
+        version: 1.3.1(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.9(zod@4.6.6))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
 
   packages/storage:
     dependencies:
@@ -3009,56 +3009,56 @@ packages:
   zod@3.24.4:
     resolution: {integrity: sha512-OdqJE9UDRPwWsrHjLN2F8bPxvwJBK22EHLWtanu0LSYr5YqzsaaW3RMgmjwr8Rypg5k+meEJdSPXJZXE/yqOMg==}
 
-  zod@4.6.5:
-    resolution: {integrity: sha512-v5l/aFXZQeai4awLbOpSoHecE9UiMrnfx75tEXLjNonXVARxQ5mOeipTjROUchszUNCqnE+hqAMujRsRHsut2Q==}
+  zod@4.6.6:
+    resolution: {integrity: sha512-4UmzQUF5fxvfcYHlbjBmejU+w+hbDnWFx4aS8kBx7nPBHcO2SqPbpAG8snbdg+Xse4pRefR98hgjFgIMCI/UhA==}
 
 snapshots:
 
-  '@agentclientprotocol/sdk@0.22.1(zod@4.6.5)':
+  '@agentclientprotocol/sdk@0.22.1(zod@4.6.6)':
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@ai-sdk/anthropic@4.0.0-beta.67(zod@4.6.5)':
+  '@ai-sdk/anthropic@4.0.0-beta.67(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 4.0.0-beta.19
-      '@ai-sdk/provider-utils': 5.0.0-beta.49(zod@4.6.5)
-      zod: 4.6.5
+      '@ai-sdk/provider-utils': 5.0.0-beta.49(zod@4.6.6)
+      zod: 4.6.6
 
-  '@ai-sdk/gateway@1.0.0-beta.3(zod@4.6.5)':
+  '@ai-sdk/gateway@1.0.0-beta.3(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 2.0.0-beta.1
-      '@ai-sdk/provider-utils': 3.0.0-beta.2(zod@4.6.5)
-      zod: 4.6.5
+      '@ai-sdk/provider-utils': 3.0.0-beta.2(zod@4.6.6)
+      zod: 4.6.6
 
-  '@ai-sdk/openai-compatible@1.0.54(zod@4.6.5)':
+  '@ai-sdk/openai-compatible@1.0.54(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 2.0.4
-      '@ai-sdk/provider-utils': 3.0.37(zod@4.6.5)
-      zod: 4.6.5
+      '@ai-sdk/provider-utils': 3.0.37(zod@4.6.6)
+      zod: 4.6.6
 
-  '@ai-sdk/provider-utils@3.0.0-beta.2(zod@4.6.5)':
+  '@ai-sdk/provider-utils@3.0.0-beta.2(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 2.0.0-beta.1
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.1.1
-      zod: 4.6.5
-      zod-to-json-schema: 3.25.2(zod@4.6.5)
+      zod: 4.6.6
+      zod-to-json-schema: 3.25.2(zod@4.6.6)
 
-  '@ai-sdk/provider-utils@3.0.37(zod@4.6.5)':
+  '@ai-sdk/provider-utils@3.0.37(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 2.0.4
       '@standard-schema/spec': 1.1.0
       eventsource-parser: 3.1.1
       undici: 6.28.0
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@ai-sdk/provider-utils@5.0.0-beta.49(zod@4.6.5)':
+  '@ai-sdk/provider-utils@5.0.0-beta.49(zod@4.6.6)':
     dependencies:
       '@ai-sdk/provider': 4.0.0-beta.19
       '@standard-schema/spec': 1.1.0
       '@workflow/serde': 4.1.0
       eventsource-parser: 3.1.1
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@ai-sdk/provider@2.0.0-beta.1':
     dependencies:
@@ -3096,10 +3096,10 @@ snapshots:
   '@anthropic-ai/claude-agent-sdk-win32-x64@0.3.270':
     optional: true
 
-  '@anthropic-ai/claude-agent-sdk@0.3.270(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.6.5)':
+  '@anthropic-ai/claude-agent-sdk@0.3.270(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.6.6)':
     dependencies:
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)
-      zod: 4.6.5
+      zod: 4.6.6
     optionalDependencies:
       '@anthropic-ai/claude-agent-sdk-darwin-arm64': 0.3.270
       '@anthropic-ai/claude-agent-sdk-darwin-x64': 0.3.270
@@ -3336,19 +3336,19 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  '@langchain/classic@1.0.48(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))(undici@6.28.0)':
+  '@langchain/classic@1.0.48(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))(undici@6.28.0)':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      '@langchain/openai': 1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(undici@6.28.0)
-      '@langchain/textsplitters': 1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      '@langchain/openai': 1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(undici@6.28.0)
+      '@langchain/textsplitters': 1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))
       handlebars: 4.7.9
       js-yaml: 5.4.2
       jsonpointer: 5.0.1
       openapi-types: 12.1.3
       yaml: 2.9.1
-      zod: 4.6.5
+      zod: 4.6.6
     optionalDependencies:
-      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - '@opentelemetry/api'
@@ -3360,19 +3360,19 @@ snapshots:
       - undici
       - ws
 
-  '@langchain/community@1.1.29(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(better-sqlite3@11.10.0)(openai@4.104.0(zod@4.6.5))(pg@8.23.0)(undici@6.28.0)':
+  '@langchain/community@1.1.29(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(better-sqlite3@11.10.0)(openai@4.104.0(zod@4.6.6))(pg@8.23.0)(undici@6.28.0)':
     dependencies:
-      '@langchain/classic': 1.0.48(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))(undici@6.28.0)
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      '@langchain/openai': 1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(undici@6.28.0)
+      '@langchain/classic': 1.0.48(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))(undici@6.28.0)
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      '@langchain/openai': 1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(undici@6.28.0)
       binary-extensions: 2.3.0
       flat: 5.0.2
       js-yaml: 4.3.2
-      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
       math-expression-evaluator: 2.0.7
-      openai: 4.104.0(zod@4.6.5)
+      openai: 4.104.0(zod@4.6.6)
       uuid: 14.0.2
-      zod: 4.6.5
+      zod: 4.6.6
     optionalDependencies:
       better-sqlite3: 11.10.0
       pg: 8.23.0
@@ -3384,15 +3384,15 @@ snapshots:
       - peggy
       - undici
 
-  '@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))':
+  '@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))':
     dependencies:
       '@cfworker/json-schema': 4.1.1
       '@standard-schema/spec': 1.1.0
       js-tiktoken: 1.0.21
-      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
       mustache: 4.2.0
       p-queue: 6.6.2
-      zod: 4.6.5
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -3400,36 +3400,36 @@ snapshots:
       - openai
       - ws
 
-  '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))':
+  '@langchain/langgraph-checkpoint@1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
 
-  '@langchain/langgraph-sdk@1.11.0(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))':
+  '@langchain/langgraph-sdk@1.11.0(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
       '@langchain/protocol': 0.0.19
       '@types/json-schema': 7.0.15
       p-queue: 9.3.3
       p-retry: 7.1.1
 
-  '@langchain/langgraph@1.4.15(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(zod@4.6.5)':
+  '@langchain/langgraph@1.4.15(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(zod@4.6.6)':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))
-      '@langchain/langgraph-sdk': 1.11.0(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))
+      '@langchain/langgraph-sdk': 1.11.0(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))
       '@langchain/protocol': 0.0.19
       '@standard-schema/spec': 1.1.0
-      zod: 4.6.5
+      zod: 4.6.6
     transitivePeerDependencies:
       - react
       - react-dom
 
-  '@langchain/openai@1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(undici@6.28.0)':
+  '@langchain/openai@1.5.13(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(undici@6.28.0)':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
       js-tiktoken: 1.0.21
-      openai: 7.15.0(undici@6.28.0)(zod@4.6.5)
-      zod: 4.6.5
+      openai: 7.15.0(undici@6.28.0)(zod@4.6.6)
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@aws-sdk/credential-provider-node'
       - '@smithy/hash-node'
@@ -3439,27 +3439,27 @@ snapshots:
 
   '@langchain/protocol@0.0.19': {}
 
-  '@langchain/textsplitters@1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))':
+  '@langchain/textsplitters@1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))':
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
       js-tiktoken: 1.0.21
 
   '@melandlabs/ai@0.10.5(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))':
     dependencies:
-      '@agentclientprotocol/sdk': 0.22.1(zod@4.6.5)
-      '@ai-sdk/anthropic': 4.0.0-beta.67(zod@4.6.5)
-      '@ai-sdk/openai-compatible': 1.0.54(zod@4.6.5)
-      '@anthropic-ai/claude-agent-sdk': 0.3.270(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.6.5)
-      '@melandlabs/contracts': 0.7.0(zod@4.6.5)
+      '@agentclientprotocol/sdk': 0.22.1(zod@4.6.6)
+      '@ai-sdk/anthropic': 4.0.0-beta.67(zod@4.6.6)
+      '@ai-sdk/openai-compatible': 1.0.54(zod@4.6.6)
+      '@anthropic-ai/claude-agent-sdk': 0.3.270(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))(zod@4.6.6)
+      '@melandlabs/contracts': 0.7.0(zod@4.6.6)
       '@melandlabs/env-config': 0.4.0
       '@melandlabs/memory-consolidation': 0.5.3
       '@melandlabs/shared': 0.4.2
       '@vercel/sandbox': 1.10.2
-      ai: 5.0.0-beta.6(zod@4.6.5)
+      ai: 5.0.0-beta.6(zod@4.6.6)
       cross-spawn: 7.0.6
       nanoid: 5.1.16
-      openai: 4.104.0(zod@4.6.5)
-      zod: 4.6.5
+      openai: 4.104.0(zod@4.6.6)
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@anthropic-ai/sdk'
       - '@modelcontextprotocol/sdk'
@@ -3469,37 +3469,37 @@ snapshots:
       - react-native-b4a
       - ws
 
-  '@melandlabs/contracts@0.7.0(zod@4.6.5)':
+  '@melandlabs/contracts@0.7.0(zod@4.6.6)':
     optionalDependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@melandlabs/env-config@0.4.0': {}
 
-  '@melandlabs/indexeddb@0.5.9(zod@4.6.5)':
+  '@melandlabs/indexeddb@0.5.9(zod@4.6.6)':
     dependencies:
-      '@melandlabs/contracts': 0.7.0(zod@4.6.5)
+      '@melandlabs/contracts': 0.7.0(zod@4.6.6)
     transitivePeerDependencies:
       - zod
 
   '@melandlabs/memory-consolidation@0.5.3': {}
 
-  '@melandlabs/memory-store@1.3.1(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.9(zod@4.6.5))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
+  '@melandlabs/memory-store@1.3.1(@cfworker/json-schema@4.1.1)(@melandlabs/indexeddb@0.5.9(zod@4.6.6))(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
     dependencies:
       '@hono/node-server': 1.19.17(hono@4.13.7)
       '@melandlabs/ai': 0.10.5(@modelcontextprotocol/sdk@1.30.0(@cfworker/json-schema@4.1.1))
-      '@melandlabs/contracts': 0.7.0(zod@4.6.5)
+      '@melandlabs/contracts': 0.7.0(zod@4.6.6)
       '@melandlabs/env-config': 0.4.0
       '@melandlabs/memory-consolidation': 0.5.3
-      '@melandlabs/okf': 0.3.3(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.9(zod@4.6.5))(hono@4.13.7)(zod@4.6.5)
+      '@melandlabs/okf': 0.3.3(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.9(zod@4.6.6))(hono@4.13.7)(zod@4.6.6)
       '@melandlabs/rag': 0.3.2(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)
       '@melandlabs/shared': 0.4.2
-      '@melandlabs/sqlite': 0.5.3(zod@4.6.5)
+      '@melandlabs/sqlite': 0.5.3(zod@4.6.6)
       '@melandlabs/vsa': 0.3.0
       '@modelcontextprotocol/sdk': 1.30.0(@cfworker/json-schema@4.1.1)
       hono: 4.13.7
-      zod: 4.6.5
+      zod: 4.6.6
     optionalDependencies:
-      '@melandlabs/indexeddb': 0.5.9(zod@4.6.5)
+      '@melandlabs/indexeddb': 0.5.9(zod@4.6.6)
     transitivePeerDependencies:
       - '@anthropic-ai/sdk'
       - '@arcjet/redact'
@@ -3655,31 +3655,31 @@ snapshots:
       - ws
       - youtubei.js
 
-  '@melandlabs/okf@0.3.3(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.9(zod@4.6.5))(hono@4.13.7)(zod@4.6.5)':
+  '@melandlabs/okf@0.3.3(@hono/node-server@1.19.17(hono@4.13.7))(@melandlabs/indexeddb@0.5.9(zod@4.6.6))(hono@4.13.7)(zod@4.6.6)':
     dependencies:
-      '@melandlabs/contracts': 0.7.0(zod@4.6.5)
+      '@melandlabs/contracts': 0.7.0(zod@4.6.6)
       yaml: 2.9.1
-      zod: 4.6.5
+      zod: 4.6.6
     optionalDependencies:
       '@hono/node-server': 1.19.17(hono@4.13.7)
-      '@melandlabs/indexeddb': 0.5.9(zod@4.6.5)
+      '@melandlabs/indexeddb': 0.5.9(zod@4.6.6)
       hono: 4.13.7
 
   '@melandlabs/rag@0.3.2(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(undici@6.28.0)':
     dependencies:
-      '@langchain/community': 1.1.29(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(better-sqlite3@11.10.0)(openai@4.104.0(zod@4.6.5))(pg@8.23.0)(undici@6.28.0)
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      '@langchain/textsplitters': 1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))
+      '@langchain/community': 1.1.29(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(better-sqlite3@11.10.0)(openai@4.104.0(zod@4.6.6))(pg@8.23.0)(undici@6.28.0)
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      '@langchain/textsplitters': 1.0.1(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))
       '@melandlabs/shared': 0.4.2
       better-sqlite3: 11.10.0
       drizzle-orm: 0.45.2(@opentelemetry/api@1.9.0)(@types/better-sqlite3@9.6.0)(better-sqlite3@11.10.0)(pg@8.23.0)
       jszip: 3.10.2
-      langchain: 1.5.11(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      openai: 4.104.0(zod@4.6.5)
+      langchain: 1.5.11(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      openai: 4.104.0(zod@4.6.6)
       pdfjs-dist: 4.10.38
       pg: 8.23.0
       sqlite-vec: 0.1.9
-      zod: 4.6.5
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@arcjet/redact'
       - '@aws-crypto/sha256-js'
@@ -3834,12 +3834,12 @@ snapshots:
       clsx: 2.1.1
       date-fns: 4.4.0
       tailwind-merge: 2.6.1
-      zod: 4.6.5
+      zod: 4.6.6
 
-  '@melandlabs/sqlite@0.5.3(zod@4.6.5)':
+  '@melandlabs/sqlite@0.5.3(zod@4.6.6)':
     dependencies:
-      '@melandlabs/contracts': 0.7.0(zod@4.6.5)
-      '@melandlabs/indexeddb': 0.5.9(zod@4.6.5)
+      '@melandlabs/contracts': 0.7.0(zod@4.6.6)
+      '@melandlabs/indexeddb': 0.5.9(zod@4.6.6)
       better-sqlite3: 11.10.0
       sqlite-vec: 0.1.9
     transitivePeerDependencies:
@@ -3862,11 +3862,11 @@ snapshots:
       eventsource-parser: 3.1.1
       jose: 6.2.10
       pkce-challenge: 5.0.1
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@modelcontextprotocol/core@2.0.0':
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@modelcontextprotocol/core@2.3.1':
     dependencies:
@@ -3889,8 +3889,8 @@ snapshots:
       json-schema-typed: 8.0.2
       pkce-challenge: 5.0.1
       raw-body: 3.0.2
-      zod: 4.6.5
-      zod-to-json-schema: 3.25.2(zod@4.6.5)
+      zod: 4.6.6
+      zod-to-json-schema: 3.25.2(zod@4.6.6)
     optionalDependencies:
       '@cfworker/json-schema': 4.1.1
     transitivePeerDependencies:
@@ -3899,7 +3899,7 @@ snapshots:
   '@modelcontextprotocol/server@2.3.1':
     dependencies:
       '@modelcontextprotocol/core': 2.3.1
-      zod: 4.6.5
+      zod: 4.6.6
 
   '@napi-rs/canvas-android-arm64@0.1.100':
     optional: true
@@ -4197,13 +4197,13 @@ snapshots:
     dependencies:
       humanize-ms: 1.2.1
 
-  ai@5.0.0-beta.6(zod@4.6.5):
+  ai@5.0.0-beta.6(zod@4.6.6):
     dependencies:
-      '@ai-sdk/gateway': 1.0.0-beta.3(zod@4.6.5)
+      '@ai-sdk/gateway': 1.0.0-beta.3(zod@4.6.6)
       '@ai-sdk/provider': 2.0.0-beta.1
-      '@ai-sdk/provider-utils': 3.0.0-beta.2(zod@4.6.5)
+      '@ai-sdk/provider-utils': 3.0.0-beta.2(zod@4.6.6)
       '@opentelemetry/api': 1.9.0
-      zod: 4.6.5
+      zod: 4.6.6
 
   ajv-formats@3.0.1:
     dependencies:
@@ -4704,13 +4704,13 @@ snapshots:
       readable-stream: 2.3.8
       setimmediate: 1.0.5
 
-  langchain@1.5.11(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)):
+  langchain@1.5.11(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)):
     dependencies:
-      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      '@langchain/langgraph': 1.4.15(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))(zod@4.6.5)
-      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)))
-      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5))
-      zod: 4.6.5
+      '@langchain/core': 1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      '@langchain/langgraph': 1.4.15(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))(zod@4.6.6)
+      '@langchain/langgraph-checkpoint': 1.1.5(@langchain/core@1.2.11(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)))
+      langsmith: 0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6))
+      zod: 4.6.6
     transitivePeerDependencies:
       - '@opentelemetry/api'
       - '@opentelemetry/exporter-trace-otlp-proto'
@@ -4720,12 +4720,12 @@ snapshots:
       - react-dom
       - ws
 
-  langsmith@0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.5)):
+  langsmith@0.10.3(@opentelemetry/api@1.9.0)(openai@4.104.0(zod@4.6.6)):
     dependencies:
       p-queue: 6.6.2
     optionalDependencies:
       '@opentelemetry/api': 1.9.0
-      openai: 4.104.0(zod@4.6.5)
+      openai: 4.104.0(zod@4.6.6)
 
   lie@3.3.0:
     dependencies:
@@ -4832,7 +4832,7 @@ snapshots:
     dependencies:
       wrappy: 1.0.2
 
-  openai@4.104.0(zod@4.6.5):
+  openai@4.104.0(zod@4.6.6):
     dependencies:
       '@types/node': 18.19.130
       '@types/node-fetch': 2.6.13
@@ -4842,14 +4842,14 @@ snapshots:
       formdata-node: 4.4.1
       node-fetch: 2.7.0
     optionalDependencies:
-      zod: 4.6.5
+      zod: 4.6.6
     transitivePeerDependencies:
       - encoding
 
-  openai@7.15.0(undici@6.28.0)(zod@4.6.5):
+  openai@7.15.0(undici@6.28.0)(zod@4.6.6):
     optionalDependencies:
       undici: 6.28.0
-      zod: 4.6.5
+      zod: 4.6.6
 
   openapi-types@12.1.3: {}
 
@@ -5449,10 +5449,10 @@ snapshots:
 
   yaml@2.9.1: {}
 
-  zod-to-json-schema@3.25.2(zod@4.6.5):
+  zod-to-json-schema@3.25.2(zod@4.6.6):
     dependencies:
-      zod: 4.6.5
+      zod: 4.6.6
 
   zod@3.24.4: {}
 
-  zod@4.6.5: {}
+  zod@4.6.6: {}
