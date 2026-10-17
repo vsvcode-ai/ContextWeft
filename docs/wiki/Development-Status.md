@@ -20,6 +20,7 @@
 - 发布审定后的 v3 实施方案，并建立 Wiki 导航、接入指南和开发状态页面。
 - 整合 [GitHub PR #15](https://github.com/vsvcode-ai/ContextWeft/pull/15) 的 MCP server 2.3.1、[PR #16](https://github.com/vsvcode-ai/ContextWeft/pull/16) 的 Zod 4.6.6，以及 [PR #17](https://github.com/vsvcode-ai/ContextWeft/pull/17) 的工具链更新。
 - 修复整合锁文件和 Biome 配置版本，并通过兼容依赖覆盖修复生产依赖安全审计中的高危、严重及可修复的中危问题。
+- 针对远程 Node.js 24 暴露的旧 SQLite 原生模块崩溃，将 OpenContext memory-store 升至 1.3.8，使记忆库与主存储均使用 better-sqlite3 13.0.3。
 - 本地 `pnpm check` 通过：115 项功能测试、10 项性能测试、构建、stdio 工作流和独立打包安装验证均通过；分支覆盖率为 100%。
 - 生产安全审计仅余一项已有记录的低危例外，详见[依赖安全说明](https://github.com/vsvcode-ai/ContextWeft/blob/main/docs/security/dependency-exceptions.md)。远程验证结果见[GitHub Actions](https://github.com/vsvcode-ai/ContextWeft/actions)。
 
